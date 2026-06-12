@@ -20,7 +20,24 @@ const getTeams = async (req, res) => {
   }
 };
 
+const calculateMatch = (userSkills, requiredSkills) => {
+  const matchedSkills = userSkills.filter(skill =>
+    requiredSkills.includes(skill)
+  );
+
+  const score =
+    requiredSkills.length === 0
+      ? 0
+      : (matchedSkills.length / requiredSkills.length) * 100;
+
+  return {
+    matchedSkills,
+    score: score.toFixed(2),
+  };
+};
+
 module.exports = {
   createTeam,
   getTeams,
+  calculateMatch,
 };

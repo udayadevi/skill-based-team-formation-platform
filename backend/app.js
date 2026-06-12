@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userroutes");
 const teamRoutes = require("./routes/teamRoutes");
 const joinRequestRoutes = require("./routes/joinRequestRoutes");
+const projectRoutes = require("./routes/projectroutes");
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/joinrequests", joinRequestRoutes);
+app.use("/api/projects", projectRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend Running Successfully");

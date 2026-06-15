@@ -12,4 +12,4 @@ router.post("/", createTeam);
 // Get All Teams
 router.get("/", getTeams);
 
-module.exports = router;s
+module.exports = router;

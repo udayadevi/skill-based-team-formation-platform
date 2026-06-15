@@ -1,0 +1,27 @@
+
+
+1. USER
+
+name
+email
+password
+skills
+role
+
+------------------
+
+2. TEAM
+
+teamName
+description
+requiredSkills
+createdBy
+members
+
+------------------
+
+3. JOIN REQUEST
+
+userId
+teamId
+status

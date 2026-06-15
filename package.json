@@ -1,23 +1,17 @@
 {
-<<<<<<< HEAD
-  "name": "frontend",
-=======
-  "name": "your-app-name",
->>>>>>> 15e1c049dae02713488298dabc57e5b0756bd0b6
+  "name": "skill-based-team-frontend",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
-<<<<<<< HEAD
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.16.1",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "react-router-dom": "^7.18.0",
+    "axios": "^1.6.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.17.0",
     "react-scripts": "5.0.1",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.5.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -45,15 +39,3 @@
     ]
   }
 }
-=======
-    "axios": "^1.16.1",
-    "react": "^18.x.x",
-    "react-dom": "^18.x.x",
-    "react-scripts": "5.x.x"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
-  }
-}
->>>>>>> 15e1c049dae02713488298dabc57e5b0756bd0b6

@@ -244,6 +244,8 @@ const forgotPassword = async (req, res) => {
         errors: errors.array()
       });
     }
+    let { email } = req.body;
+    email = email.toLowerCase().trim();
 
     let { email } = req.body;
     email = email.toLowerCase().trim();

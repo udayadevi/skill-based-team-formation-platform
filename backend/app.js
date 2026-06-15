@@ -3,7 +3,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
-const userRoutes = require("./routes/userroutes");
+// Routes
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const joinRequestRoutes = require("./routes/joinRequestRoutes");
 const projectRoutes = require("./routes/projectroutes");
@@ -12,13 +14,16 @@ dotenv.config();
 
 const app = express();
 
+// Database connection
 connectDB();
 
-// VERY IMPORTANT - put this BEFORE routes
+// Middleware
 app.use(cors());
 
 app.use(express.json());
 
+// API Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/joinrequests", joinRequestRoutes);

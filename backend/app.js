@@ -8,7 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const joinRequestRoutes = require("./routes/joinRequestRoutes");
-const projectRoutes = require("./routes/projectroutes");
+const projectRoutes = require("./routes/projectRoutes");
 
 dotenv.config();
 
@@ -19,7 +19,6 @@ connectDB();
 
 // Middleware
 app.use(cors());
-
 app.use(express.json());
 
 // API Routes
@@ -29,8 +28,9 @@ app.use("/api/teams", teamRoutes);
 app.use("/api/joinrequests", joinRequestRoutes);
 app.use("/api/projects", projectRoutes);
 
+// Test route
 app.get("/", (req, res) => {
-  res.send("Backend Running Successfully");
+  res.send("Backend Running Successfully 🚀");
 });
 
 const PORT = process.env.PORT || 5000;

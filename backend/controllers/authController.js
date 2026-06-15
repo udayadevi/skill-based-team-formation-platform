@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({
         success: false,
-        errors: errors.array(),
+        errors: errors.array()
       });
     }
 
@@ -132,6 +132,14 @@ const logoutUser = async (req, res) => {
 /* ---------------- SEND OTP ---------------- */
 const sendOtp = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
     let { email } = req.body;
     email = email.toLowerCase().trim();
 
@@ -144,19 +152,20 @@ const sendOtp = async (req, res) => {
       });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
 
     otpStore.set(email, {
       otp,
       expiresAt: Date.now() + 5 * 60 * 1000,
     });
 
-    console.log("OTP:", otp);
+    // console.log("OTP:", otp);
 
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully",
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -164,11 +173,27 @@ const sendOtp = async (req, res) => {
     });
   }
 };
-
 /* ---------------- VERIFY OTP ---------------- */
 const verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    let { email, otp } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    email = email.toLowerCase().trim();
 
     const data = otpStore.get(email);
 
@@ -187,7 +212,7 @@ const verifyOtp = async (req, res) => {
       });
     }
 
-    if (data.otp !== Number(otp)) {
+    if (String(data.otp) !== String(otp)) {
       return res.status(400).json({
         success: false,
         message: "Invalid OTP",
@@ -200,6 +225,7 @@ const verifyOtp = async (req, res) => {
       success: true,
       message: "OTP verified",
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -211,7 +237,16 @@ const verifyOtp = async (req, res) => {
 /* ---------------- FORGOT PASSWORD ---------------- */
 const forgotPassword = async (req, res) => {
   try {
-    const { email } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    let { email } = req.body;
+    email = email.toLowerCase().trim();
 
     const user = await User.findOne({ email });
 
@@ -222,19 +257,20 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
 
     otpStore.set(email, {
       otp,
       expiresAt: Date.now() + 5 * 60 * 1000,
     });
 
-    console.log("Reset OTP:", otp);
+    // console.log("Reset OTP:", otp);
 
     return res.status(200).json({
       success: true,
       message: "OTP sent for password reset",
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -242,11 +278,25 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
-
 /* ---------------- RESET PASSWORD ---------------- */
 const resetPassword = async (req, res) => {
   try {
-    const { email, otp, newPassword } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    let { email, otp, newPassword } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+    email = email.toLowerCase().trim();
 
     const data = otpStore.get(email);
 
@@ -265,7 +315,7 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    if (data.otp !== Number(otp)) {
+    if (String(data.otp) !== String(otp)) {
       return res.status(400).json({
         success: false,
         message: "Invalid OTP",
@@ -282,7 +332,6 @@ const resetPassword = async (req, res) => {
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
-
     await user.save();
     otpStore.delete(email);
 
@@ -290,6 +339,7 @@ const resetPassword = async (req, res) => {
       success: true,
       message: "Password reset successful",
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,

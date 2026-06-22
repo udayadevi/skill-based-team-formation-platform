@@ -14,7 +14,6 @@ const {
   logoutUser,
   sendOtp,
   verifyOtp,
-  forgotPassword,
   resetPassword
 } = require("../controllers/authController");
 
@@ -22,12 +21,16 @@ const {
 router.post(
   "/register",
   [
-    body("name")
+    body("firstName")
       .notEmpty()
-      .withMessage("Name is required"),
+      .withMessage("First name is required"),
+
+    body("lastName")
+      .notEmpty()
+      .withMessage("last name is required"),
 
     body("email")
-      .isEmail()
+      .isEmail().normalizeEmail()
       .withMessage("Invalid email"),
 
     body("password")
@@ -42,7 +45,19 @@ router.post(
       .isLength({ min: 10, max: 10 })
       .withMessage("Mobile number must be 10 digits")
       .isNumeric()
-      .withMessage("Mobile must contain only numbers")
+      .withMessage("Mobile must contain only numbers"),
+
+    body("experience")
+      .notEmpty()
+      .withMessage("Experience is required"),
+
+    body("role")
+      .notEmpty()
+      .withMessage("Role is required"),
+
+    body("skills")
+      .notEmpty()
+      .withMessage("Skills are required")
   ],
   registerUser
 );
@@ -52,7 +67,7 @@ router.post(
   "/login",
   [
     body("email")
-      .isEmail()
+      .isEmail().normalizeEmail()
       .withMessage("Invalid email"),
 
     body("password")
@@ -74,8 +89,7 @@ router.post(
   "/send-otp",
   [
     body("email")
-      .isEmail()
-      .normalizeEmail()
+      .isEmail().normalizeEmail()
       .withMessage("Valid email required")
   ],
   sendOtp
@@ -86,27 +100,14 @@ router.post(
   "/verify-otp",
   [
     body("email")
-      .isEmail()
+      .isEmail().normalizeEmail()
       .withMessage("Valid email required"),
 
     body("otp")
-      .isNumeric()
-      .withMessage("OTP must be a number")
       .isLength({ min: 6, max: 6 })
       .withMessage("OTP must be 6 digits")
   ],
   verifyOtp
-);
-
-// Forgot Password
-router.post(
-  "/forgot-password",
-  [
-    body("email")
-      .isEmail()
-      .withMessage("Valid email required")
-  ],
-  forgotPassword
 );
 
 // Reset Password
@@ -114,16 +115,14 @@ router.post(
   "/reset-password",
   [
     body("email")
-      .isEmail()
+      .isEmail().normalizeEmail()
       .withMessage("Valid email required"),
-
-    body("otp")
-      .notEmpty()
-      .withMessage("OTP required"),
-
     body("newPassword")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters")
+      .not()
+      .contains("password")
+
   ],
   resetPassword
 );

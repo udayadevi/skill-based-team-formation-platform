@@ -35,7 +35,7 @@ const getProfile = async (req, res) => {
 
         const user = await User
             .findById(req.params.id)
-            .select("name skills role createdAt");
+            .select("firstName lastName skills role createdAt");
 
         if (!user) {
             return res.status(404).json({
@@ -61,9 +61,17 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
 
-        const { name, skills , mobile} = req.body;
-
-        if (name !== undefined && name.trim() === "") {
+        const {
+            firstName,
+            lastName,
+            skills,
+            mobile,
+            github,
+            linkedin,
+            portfolio,
+            bio
+        } = req.body;
+        if (firstName !== undefined && firstName.trim() === "") {
             return res.status(400).json({
                 message: "Name is required"
             });
@@ -80,13 +88,18 @@ const updateProfile = async (req, res) => {
         const updatedUser = await User.findByIdAndUpdate(
             req.user._id,
             {
-                name,
-                skills: skills ? skills : existingUser.skills,
-                 mobile: mobile ?? existingUser.mobile
+                firstName: firstName || existingUser.firstName,
+                lastName: lastName || existingUser.lastName,
+                mobile: mobile || existingUser.mobile,
+                github: github || existingUser.github,
+                linkedin: linkedin || existingUser.linkedin,
+                portfolio: portfolio || existingUser.portfolio,
+                bio: bio || existingUser.bio,
+                skills: typeof skills === "string"
+                    ? skills.split(",").map(s => s.trim())
+                    : skills || existingUser.skills
             },
-            {
-                new: true
-            }
+            { new: true }
         ).select("-password");
 
         res.status(200).json({

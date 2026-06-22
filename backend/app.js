@@ -1,6 +1,10 @@
 const cors = require("cors");
 const express = require("express");
 const dotenv = require("dotenv");
+
+// 👇 FIRST load .env
+dotenv.config();
+
 const connectDB = require("./config/db");
 
 // Routes
@@ -10,15 +14,16 @@ const teamRoutes = require("./routes/teamRoutes");
 const joinRequestRoutes = require("./routes/joinRequestRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 
-dotenv.config();
-
 const app = express();
 
 // Database connection
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
 
 // API Routes

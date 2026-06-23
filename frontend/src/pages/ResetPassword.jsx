@@ -1,27 +1,30 @@
 import React, { useState } from "react";
 import api from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function ResetPassword() {
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const email = sessionStorage.getItem("resetEmail");
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    const email =
+        location.state?.email ||
+        sessionStorage.getItem("resetEmail");
 
     const handleReset = async (e) => {
         e.preventDefault();
 
-        
+
         if (!password || password.length < 6) {
             toast.error("Password must be at least 6 characters");
             return;
         }
 
-        setLoading(true);  
+        setLoading(true);
 
         try {
             const res = await api.post("/auth/reset-password", {
@@ -39,7 +42,7 @@ function ResetPassword() {
             toast.error(err.response?.data?.message || "Reset failed");
         }
         finally {
-            setLoading(false);  
+            setLoading(false);
         }
     };
 

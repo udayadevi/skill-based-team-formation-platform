@@ -16,8 +16,9 @@ function ForgotPassword() {
 
       toast.success(res.data.message);
 
+      sessionStorage.setItem("resetEmail", email);
       navigate("/verify-otp", { state: { email } });
-
+      
     } catch (error) {
       toast.error(error.response?.data?.message || "Error");
     }

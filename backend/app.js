@@ -2,7 +2,6 @@ const cors = require("cors");
 const express = require("express");
 const dotenv = require("dotenv");
 
-// 👇 FIRST load .env
 dotenv.config();
 
 const connectDB = require("./config/db");

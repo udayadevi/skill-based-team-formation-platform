@@ -27,8 +27,7 @@ function Layout({ children }) {
 
         <div className="nav-right">
 
-          const user = JSON.parse(localStorage.getItem("user") || "{ }");
-
+          JSON.parse(localStorage.getItem("user") || "{ }");
           <span>
             {user?.firstName || "User"}
           </span>

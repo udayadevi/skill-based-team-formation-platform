@@ -36,7 +36,7 @@ router.delete("/:id", protect, deleteTeam);
 // LEAVE TEAM
 router.put("/leave/:id", protect, leaveTeam);
 
-// ADD MEMBER 
+// ADD MEMBER
 router.put("/add-member/:id", protect, addMember);
 
 // REMOVE MEMBER

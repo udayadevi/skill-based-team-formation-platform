@@ -41,6 +41,8 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [agree, setAgree] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [termsRead, setTermsRead] = useState(false);
 
   const validateField = (name, value) => {
 
@@ -428,15 +430,21 @@ export default function Register() {
                 <textarea name="bio" onChange={handleChange} />
               </div>
             </div>
-
             {/* TERMS */}
             <div className="terms">
               <input
                 type="checkbox"
                 checked={agree}
+                disabled={!termsRead}
                 onChange={() => setAgree(!agree)}
               />
-              <span>I agree to Terms & Conditions</span>
+
+              <span
+                className="terms-link"
+                onClick={() => setShowTerms(true)}
+              >
+                Terms & Conditions
+              </span>
             </div>
 
             {/* BUTTON */}
@@ -447,6 +455,48 @@ export default function Register() {
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>
+
+            {/* TERMS MODAL */}
+            {showTerms && (
+              <div className="modal-overlay">
+                <div className="terms-modal">
+
+                  <h2>Terms & Conditions</h2>
+
+                  <div className="terms-content">
+
+                    <p>
+                      Welcome to SkillBasedTeam. By creating an account, you agree to the
+                      following terms:
+                    </p>
+
+                    <ol>
+                      <li>Provide accurate and truthful information.</li>
+                      <li>Do not create fake or duplicate accounts.</li>
+                      <li>Respect all members of the platform.</li>
+                      <li>Do not upload harmful or illegal content.</li>
+                      <li>Your account may be suspended for violating these rules.</li>
+                      <li>Your personal information will only be used for platform functionality.</li>
+                      <li>We may update these Terms & Conditions from time to time.</li>
+
+                    </ol>
+
+                  </div>
+
+                  <button
+                    type="button"
+                    className="close-btn"
+                    onClick={() => {
+                      setTermsRead(true);
+                      setShowTerms(false);
+                    }}
+                  >
+                    I Have Read & Close
+                  </button>
+
+                </div>
+              </div>
+            )}
 
             <div className="login-text">
               Already have an account? <Link to="/login">Login here</Link>

@@ -3,6 +3,7 @@ import api from "../services/api";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import "../styles/ResetPassword.css";
 
 function ResetPassword() {
     const [password, setPassword] = useState("");
@@ -10,7 +11,7 @@ function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     const email =
         location.state?.email ||
         sessionStorage.getItem("resetEmail");
@@ -47,35 +48,35 @@ function ResetPassword() {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
-                <h2>Reset Password</h2>
+  <div className="auth-container">
+    <div className="auth-card">
+      <h2>Reset Password</h2>
 
-                <form onSubmit={handleReset}>
-                    <div className="password-field">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="New Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+      <form onSubmit={handleReset}>
+        <div className="password-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="New Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="eye-btn"
-                        >
-                            {showPassword ? <FiEyeOff /> : <FiEye />}
-                        </button>
-                    </div>
-
-                    <button type="submit" disabled={loading}>
-                        {loading ? "Resetting..." : "Reset Password"}
-                    </button>
-                </form>
-            </div>
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="eye-btn"
+          >
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+          </button>
         </div>
-    );
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Resetting..." : "Reset Password"}
+        </button>
+      </form>
+    </div>
+  </div>
+);
 }
 
 export default ResetPassword;

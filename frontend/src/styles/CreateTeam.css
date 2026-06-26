@@ -1,0 +1,61 @@
+.create-team-page {
+  min-height: 100vh;
+  background: #0f172a;
+  color: white;
+  padding: 40px;
+}
+
+.create-team-page h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 38px;
+}
+
+.team-form {
+  max-width: 700px;
+  margin: auto;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,.3);
+}
+
+.team-form label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.team-form input,
+.team-form textarea,
+.team-form select {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #0f172a;
+  color: white;
+  font-size: 15px;
+}
+
+.team-form textarea {
+  resize: none;
+  height: 120px;
+}
+
+.team-form button {
+  width: 100%;
+  margin-top: 30px;
+  padding: 15px;
+  background: #38bdf8;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.team-form button:hover {
+  background: #0ea5e9;
+}

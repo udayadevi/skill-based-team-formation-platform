@@ -13,8 +13,6 @@ import "../styles/Home.css";
 const Home = () => {
   const navigate = useNavigate();
 
-  const isLoggedIn = !!localStorage.getItem("token");
-
   return (
     <div className="home">
 
@@ -36,68 +34,32 @@ const Home = () => {
             Home
           </li>
 
-          <li
-            onClick={() =>
-              document
-                .getElementById("about")
-                .scrollIntoView({ behavior: "smooth" })
-            }
-          >
+          <li onClick={() => document.getElementById("about").scrollIntoView({ behavior: "smooth" })}>
             About
           </li>
 
-          <li
-            onClick={() =>
-              document
-                .getElementById("features")
-                .scrollIntoView({ behavior: "smooth" })
-            }
-          >
+          <li onClick={() => document.getElementById("features").scrollIntoView({ behavior: "smooth" })}>
             Features
           </li>
 
-          <li>Find Team</li>
-          <li>Create Team</li>
+          <li onClick={() => navigate("/find-team")}>
+  Find Team
+</li>
 
-          {/*  ONLY SHOW IF LOGGED IN */}
-          {isLoggedIn && (
-            <li onClick={() => navigate("/profile")}>
-              Profile
-            </li>
-          )}
+           <li onClick={() => navigate("/create-team")}>
+  Create Team
+</li>
+<li onClick={() => navigate("/projects")}>
+  Projects
+</li>
+
+           <li onClick={() => navigate("/profile")}>Profile</li>
         </ul>
 
         {/* RIGHT BUTTONS */}
         <div className="nav-right">
-
-          {isLoggedIn ? (
-            <>
-              <button onClick={() => navigate("/profile")}>
-                Profile
-              </button>
-
-              <button
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  localStorage.removeItem("user");
-                  navigate("/login");
-                }}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => navigate("/login")}>
-                Login
-              </button>
-
-              <button onClick={() => navigate("/register")}>
-                Register
-              </button>
-            </>
-          )}
-
+          <button onClick={() => navigate("/login")}>Login</button>
+          <button onClick={() => navigate("/register")}>Register</button>
         </div>
 
       </nav>

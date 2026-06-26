@@ -11,16 +11,18 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOtp";
 import ResetPassword from "./pages/ResetPassword";
-import Teams from "./pages/Teams";
-import Projects from "./pages/Projects";
 import Profile from "./pages/Profile";
+import CreateTeam from "./pages/CreateTeam";
+import FindTeam from "./pages/FindTeam";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
     <>
       <Routes>
 
-        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/" element={<Home />} />
+
         <Route path="/home" element={<Home />} />
 
         <Route path="/login" element={<Login />} />
@@ -31,6 +33,8 @@ function App() {
 
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/find-team" element={<FindTeam />} />
+        <Route path="/projects" element={<Projects />} />
 
         <Route
           path="/dashboard"
@@ -40,36 +44,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/teams"
-          element={
-            <ProtectedRoute>
-              <Teams />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/projects"
-          element={
-            <ProtectedRoute>
-              <Projects />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="*" element={<Navigate to="/home" />} />
-
+        
+<Route path="/create-team" element={<CreateTeam />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
     </>

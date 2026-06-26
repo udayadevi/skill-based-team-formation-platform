@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ================= ROOT VARIABLES ================= */
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+
+  --bg: #f8fafc;
+  --card: #ffffff;
+
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+
+  --success: #16a34a;
+  --error: #dc2626;
+}
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ================= HTML / BODY ================= */
+html, body {
+  height: 100%;
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+/* IMPORTANT: root must support full layout */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= GLOBAL TEXT ================= */
+body {
+  line-height: 1.5;
+}
+
+/* ================= AUTH CENTER FIX (IMPORTANT) ================= */
+.auth-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+
+/* ================= OPTIONAL UTILITY ================= */
+button {
+  font-family: inherit;
+}
+
+input, button {
+  outline: none;
+}

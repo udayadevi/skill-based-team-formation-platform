@@ -1,44 +1,37 @@
 const cors = require("cors");
 const express = require("express");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-
-const userRoutes = require("./routes/userroutes");
-const teamRoutes = require("./routes/teamRoutes");
-const joinRequestRoutes = require("./routes/joinRequestRoutes");
 
 dotenv.config();
 
+const connectDB = require("./config/db");
+
+// Routes
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const teamRoutes = require("./routes/teamRoutes");
+const joinRequestRoutes = require("./routes/joinRequestRoutes");
+const projectRoutes = require("./routes/projectRoutes");
+
 const app = express();
 
+// Database connection
 connectDB();
 
-// VERY IMPORTANT - put this BEFORE routes
+// Middleware
 app.use(cors());
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  if (req.method === "OPTIONS") {
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-    );
-    return res.sendStatus(200);
-  }
-  next();
-});
-
 app.use(express.json());
 
+// API Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/joinrequests", joinRequestRoutes);
+app.use("/api/projects", projectRoutes);
 
+// Test route
 app.get("/", (req, res) => {
-  res.send("Backend Running Successfully");
+  res.send("Backend Running Successfully 🚀");
 });
 
 const PORT = process.env.PORT || 5000;

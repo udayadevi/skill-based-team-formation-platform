@@ -1,0 +1,528 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+}
+
+/* ================= PAGE ================= */
+
+.register-page{
+  min-height:100vh;
+  background:#0f172a;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ================= HEADER ================= */
+
+.register-header{
+  background:#111827;
+  padding:18px 40px;
+  border-bottom:1px solid #1e293b;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand img{
+  width:42px;
+}
+
+.brand h2{
+  font-size:24px;
+}
+
+.brand p{
+  color:#94a3b8;
+  font-size:13px;
+}
+
+/* ================= CONTENT ================= */
+
+.register-content{
+  flex:1;
+  display:flex;
+  gap:30px;
+  padding:40px;
+}
+
+/* ================= LEFT ================= */
+
+.left-panel{
+  width:45%;
+}
+
+.left-title h1{
+  font-size:42px;
+  margin-bottom:8px;
+  text-align: center;
+}
+
+.left-title p{
+  font-size:18px;
+  color:#cbd5e1;
+  margin-bottom:25px;
+  text-align: center;
+}
+
+.hero-box{
+  display:flex;
+  justify-content:center;
+  margin-bottom:30px;
+}
+
+.hero-box img{
+  width:420px;
+  max-width:100%;
+}
+
+/* FEATURES */
+
+.why-section h2{
+  margin-bottom:20px;
+}
+
+.feature-card{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:#1e293b;
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:18px;
+  transition:0.3s;
+}
+
+.feature-card:hover{
+  background:#273449;
+  transform:translateY(-4px);
+}
+
+.feature-card img{
+  width:60px;
+  height:60px;
+  object-fit:contain;
+}
+
+.feature-card h3{
+  margin-bottom:6px;
+}
+
+.feature-card p{
+  color:#cbd5e1;
+  font-size:14px;
+}
+
+/* ================= RIGHT ================= */
+
+.right-panel{
+  width:55%;
+  display:flex;
+  justify-content:center;
+}
+
+.form-card{
+  width:100%;
+  background:#1e293b;
+  padding:35px;
+  border-radius:18px;
+  border:1px solid #334155;
+}
+
+.form-card h1{
+  margin-bottom:8px;
+  text-align: center;
+}
+
+.form-card p{
+  color:#cbd5e1;
+  margin-bottom:25px;
+  text-align: center;
+}
+
+/* ROW */
+
+.row{
+  display:flex;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+.field{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.field label{
+  margin-bottom:8px;
+  color:#cbd5e1;
+  font-size:14px;
+  font-weight:600;
+}
+
+/* INPUTS */
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid #334155;
+  background:#0f172a;
+  color:#fff;
+  outline:none;
+  transition:0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#38bdf8;
+}
+
+textarea{
+  height:120px;
+  resize:none;
+}
+
+/* password */
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 45px;
+}
+
+.eye-btn {
+  position: absolute;
+
+  right: 12px;
+
+  top: 68%;
+
+  transform: translateY(-50%);
+
+  width: 24px;
+  height: 24px;
+
+  padding: 0;
+  margin: 0;
+
+  border: none;
+
+  background: transparent !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 18px;
+  line-height: 1;
+
+  color: #38bdf8;
+}
+
+
+/* ================= SKILLS BOX (FINAL) ================= */
+
+.skills-box{
+  background:#0f172a;
+  border:1px solid #334155;
+  border-radius:12px;
+  padding:15px;
+  margin-top:10px;
+}
+
+.skills-container{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.skill-btn{
+  padding:8px 12px;
+  border-radius:20px;
+  border:1px solid #334155;
+  background:#1e293b;
+  color:#cbd5e1;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.skill-btn:hover{
+  border-color:#38bdf8;
+  color:#fff;
+}
+
+.skill-btn.active{
+  background:#38bdf8;
+  color:#000;
+  font-weight:600;
+}
+
+/* CUSTOM SKILL INPUT */
+
+.custom-skill-box{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.custom-skill-box input{
+  flex:1;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #334155;
+  background:#0f172a;
+  color:#fff;
+}
+
+.custom-skill-box button{
+  padding:10px 14px;
+  background:#38bdf8;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.custom-skill-box button:hover{
+  background:#0ea5e9;
+}
+
+/* SELECTED SKILLS */
+
+.skill-chip{
+  display:inline-block;
+  margin-top:10px;
+  margin-right:6px;
+  padding:6px 10px;
+  background:#38bdf8;
+  color:#000;
+  border-radius:20px;
+  font-size:12px;
+}
+
+/* TERMS */
+
+.terms{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:22px 0;
+}
+
+.terms span{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.terms input{
+  width:18px;
+  height:18px;
+}
+
+/* BUTTON */
+
+.create-btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:#38bdf8;
+  color:#000;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.create-btn:hover{
+  background:#0ea5e9;
+}
+
+/* LOGIN */
+
+.login-text{
+  margin-top:18px;
+  text-align:center;
+  color:#cbd5e1;
+}
+
+.login-text a{
+  color:#38bdf8;
+  margin-left:6px;
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* FOOTER */
+
+.register-footer{
+  background:#111827;
+  text-align:center;
+  padding:20px;
+  color:#94a3b8;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:992px){
+  .register-content{
+    flex-direction:column;
+  }
+
+  .left-panel,
+  .right-panel{
+    width:100%;
+  }
+}
+
+@media(max-width:768px){
+  .register-content{
+    padding:20px;
+  }
+
+  .left-title h1{
+    font-size:32px;
+  }
+
+  .row{
+    flex-direction:column;
+  }
+
+  .form-card{
+    padding:25px;
+  }
+
+  .hero-box img{
+    width:260px;
+  }
+}
+
+.error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.terms-note{
+  display:block;
+  color:red;
+  font-size:12px;
+  margin-top:4px;
+}
+
+.terms input:disabled{
+  cursor:not-allowed;
+}
+
+/* Terms Link */
+.terms-link{
+  color:#38bdf8;
+  cursor:pointer;
+  text-decoration:underline;
+  font-weight:600;
+}
+
+.terms-link:hover{
+  color:#0ea5e9;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+/* Modal Box */
+.terms-modal {
+  width: 650px;
+  max-width: 90%;
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.3);
+}
+
+/* Modal Heading */
+.terms-modal h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Scrollable Content */
+.terms-content {
+  max-height: 320px;
+  overflow-y: auto;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.terms-content p {
+  color: #374151;
+  margin-bottom: 15px;
+}
+
+.terms-content ol {
+  padding-left: 20px;
+}
+
+.terms-content li {
+  color: #374151;
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+.terms-modal h2 {
+  color: #111827;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Close Button */
+.close-btn {
+  display: block;
+  margin-left: auto;
+
+  background: #38bdf8;
+  color: #000;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.close-btn:hover {
+  background: #0ea5e9;
+}

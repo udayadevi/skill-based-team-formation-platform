@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+/* =========================
+   FULL PAGE CENTER
+========================= */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  padding: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 30px;
+  background: #111827;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  text-align: center;
+  color: white;
+}
+
+/* TITLE */
+.auth-card h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+/* SUB TEXT */
+.sub-text {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   INPUT
+========================= */
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+/* BUTTON */
+.auth-card button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.auth-card button:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   PASSWORD FIELD (FINAL FIX)
+========================= */
+.password-field {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* input space for icon */
+.password-field input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+/* eye icon RIGHT SIDE */
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-btn:hover {
+  color: #ffffff;
+}
+
+/* =========================
+   LINKS
+========================= */
+.link-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.link-text span {
+  color: #60a5fa;
+  cursor: pointer;
+}
+
+.link-text span:hover {
+  text-decoration: underline;
+}

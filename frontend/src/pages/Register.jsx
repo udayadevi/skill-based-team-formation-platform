@@ -25,6 +25,7 @@ export default function Register() {
     mobile: "",
     password: "",
     confirmPassword: "",
+    gender: "",
     experience: "",
     role: "",
     skills: "",
@@ -75,6 +76,10 @@ export default function Register() {
       if (!value) error = "Confirm password required";
       else if (value !== form.password)
         error = "Passwords not match";
+    }
+
+    if (name === "gender") {
+      if (!value) error = "Gender is required";
     }
 
     if (name === "skills") {
@@ -157,7 +162,22 @@ export default function Register() {
     }
 
     try {
-      const data = await registerUser(form);
+      const payload = {
+        name: form.firstName + " " + form.lastName,
+        email: form.email,
+        password: form.password,
+        role: form.role,
+        skills: form.skills.split(",").map(s => s.trim()),
+        github: form.github,
+        linkedin: form.linkedin,
+        portfolio: form.portfolio,
+        bio: form.bio,
+        gender: form.gender,
+        experience: form.experience,
+        mobile: form.mobile
+      };
+
+      const res = await registerUser(payload);
 
       toast.success("Registration Successful 🚀");
 
@@ -169,7 +189,7 @@ export default function Register() {
       );
     }
     finally {
-      setLoading(false); // ✅ BEST PRACTICE
+      setLoading(false);
     }
   };
 
@@ -289,7 +309,7 @@ export default function Register() {
                   className="eye-btn"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                 {showPassword ? <FiEyeOff /> : <FiEye />}
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
 
@@ -306,7 +326,7 @@ export default function Register() {
                   className="eye-btn"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                  {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
 
@@ -351,12 +371,36 @@ export default function Register() {
             </div>
 
             {/* SKILLS */}
-            <div className="field">
-              <label>Skills *</label>
-              <input name="skills" onChange={handleChange} />
-              {errors.skills && <span className="error">{errors.skills}</span>}
-            </div>
+            <div className="row">
 
+              <div className="field">
+                <label>Skills *</label>
+                <input
+                  name="skills"
+                  onChange={handleChange}
+                />
+                {errors.skills && (
+                  <span className="error">{errors.skills}</span>
+                )}
+              </div>
+
+              <div className="field">
+                <label>Gender *</label>
+                <select
+                  name="gender"
+                  onChange={handleChange}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+
+                {errors.gender && (
+                  <span className="error">{errors.gender}</span>
+                )}
+              </div>
+
+            </div>
             <br />
 
             {/* LINKS */}

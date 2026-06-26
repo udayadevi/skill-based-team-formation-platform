@@ -11,14 +11,16 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOtp";
 import ResetPassword from "./pages/ResetPassword";
+import Teams from "./pages/Teams";
+import Projects from "./pages/Projects";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <>
       <Routes>
 
-        <Route path="/" element={<Home />} />
-
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
 
         <Route path="/login" element={<Login />} />
@@ -38,6 +40,36 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/teams"
+          element={
+            <ProtectedRoute>
+              <Teams />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/projects"
+          element={
+            <ProtectedRoute>
+              <Projects />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/home" />} />
+
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
     </>

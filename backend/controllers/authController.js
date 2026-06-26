@@ -30,6 +30,7 @@ const registerUser = async (req, res) => {
       password,
       experience,
       role,
+      gender,
       skills,
       github,
       linkedin,
@@ -68,11 +69,14 @@ const registerUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
+    const safeUser = user.toObject();
+    delete safeUser.password;
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
       token,
-      user,
+      user: safeUser,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -104,12 +108,16 @@ const loginUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
+    const safeUser = user.toObject();
+    delete safeUser.password;
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
       token,
-      user,
+      user: safeUser,
     });
+
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -126,10 +134,10 @@ const logoutUser = async (req, res) => {
 /* ---------------- SEND OTP ---------------- */
 const sendOtp = async (req, res) => {
   try {
-    const { email } = req.body;
+    let { email } = req.body;
+    email = email.toLowerCase().trim();
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
-
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
@@ -162,6 +170,13 @@ const verifyOtp = async (req, res) => {
     let { email, otp } = req.body;
 
     email = email.toLowerCase().trim();
+
+    if (!email || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and OTP required"
+      });
+    }
 
     const data = otpStore.get(email);
 

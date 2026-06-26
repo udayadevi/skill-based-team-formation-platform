@@ -1,12 +1,14 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-});
+baseURL:
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api",});
 
 // Attach token automatically
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -15,16 +17,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// global error handling (ADD THIS)
 api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response?.status === 401) {
-      localStorage.clear();
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+
       window.location.href = "/login";
     }
-    return Promise.reject(err);
+
+    return Promise.reject(error);
   }
 );
-
 export default api;

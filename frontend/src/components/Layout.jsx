@@ -1,36 +1,69 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Layout.css";
 
 function Layout({ children }) {
-
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const user = JSON.parse(
+    localStorage.getItem("user") ||
+    sessionStorage.getItem("user") ||
+    "{}"
+  );
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+const handleLogout = () => {
+  const savedImage = localStorage.getItem("profileImage");
 
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("user");
 
-    navigate("/login");
+  // 🔥 keep profile image safe
+  if (savedImage) {
+    localStorage.setItem("profileImage", savedImage);
+  }
 
-  };
-
+  navigate("/login");
+};
   return (
-
     <div>
-
       <nav className="navbar">
 
-        <h2>SkillTeam</h2>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/dashboard")}
+        >
+          SkillTeam
+        </h2>
+
+        <div className="nav-center">
+
+          <button
+            className="nav-link-btn"
+            onClick={() => navigate("/home")}
+          >
+            Home
+          </button>
+
+          <button
+            className="nav-link-btn"
+            onClick={() => navigate("/dashboard")}
+          >
+            Dashboard
+          </button>
+
+        </div>
 
         <div className="nav-right">
 
-          JSON.parse(localStorage.getItem("user") || "{ }");
-          <span>
-            {user?.firstName || "User"}
-          </span>
+          <div
+            className="profile-icon"
+            onClick={() => navigate("/profile")}
+            title="Profile"
+          >
+            {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
+          </div>
 
           <button onClick={handleLogout}>
             Logout
@@ -40,14 +73,8 @@ function Layout({ children }) {
 
       </nav>
 
-      <main>
-
-        {children}
-
-      </main>
-
+      <main>{children}</main>
     </div>
-
   );
 }
 

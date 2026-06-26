@@ -46,6 +46,12 @@ const userSchema = new mongoose.Schema(
       required: true
     },
 
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+      required: true
+    },
+
     skills: {
       type: [String],
       default: []
@@ -70,6 +76,24 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+
+    teamsJoined: {
+      type: Number,
+      default: 0
+    },
+
+    projectsWorked: {
+      type: Number,
+      default: 0
+    },
+
+    projectExperience: [
+      {
+        projectName: String,
+        description: String,
+        role: String
+      }
+    ],
 
     isActive: {
       type: Boolean,

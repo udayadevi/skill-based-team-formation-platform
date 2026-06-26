@@ -27,13 +27,15 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const data = await loginUser(form);
+      const res = await loginUser(form);
+      const token = res.token || res.data?.token;
+      const user = res.user || res.data?.user;
       if (remember) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
       } else {
-        sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("user", JSON.stringify(data.user));
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("user", JSON.stringify(user));
       }
 
       toast.success("Login Successful 🚀");
@@ -77,7 +79,7 @@ export default function Login() {
               className="eye-btn"
               onClick={() => setShowPassword(!showPassword)}
             >
-                            {showPassword ? <FiEyeOff /> : <FiEye />}
+              {showPassword ? <FiEyeOff /> : <FiEye />}
             </button>
 
           </div>

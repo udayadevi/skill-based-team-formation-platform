@@ -88,8 +88,8 @@ const updateProfile = async (req, res) => {
         const updatedUser = await User.findByIdAndUpdate(
             req.user._id,
             {
-                firstName: firstName || existingUser.firstName,
-                lastName: lastName || existingUser.lastName,
+                firstName: firstName?.trim() || existingUser.firstName,
+                lastName: lastName?.trim() || existingUser.lastName,
                 mobile: mobile || existingUser.mobile,
                 github: github || existingUser.github,
                 linkedin: linkedin || existingUser.linkedin,

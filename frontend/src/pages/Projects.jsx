@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaSearch,
@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import "../styles/Projects.css";
 
-const projects = [
+const defaultProjects = [
   {
     id: 1,
     title: "Skill Based Team Formation",
@@ -46,11 +46,32 @@ const projects = [
 const Projects = () => {
   const navigate = useNavigate();
 
+  const [projects, setProjects] = useState(defaultProjects);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const customProjects =
+      JSON.parse(localStorage.getItem("customProjects")) || [];
+
+    const formattedProjects = customProjects.map((project) => ({
+      ...project,
+      icon: <FaLaptopCode />,
+    }));
+
+    setProjects([...formattedProjects, ...defaultProjects]);
+  }, []);
+
+  const filteredProjects = projects.filter((project) => {
+    const text = `${project.title} ${project.category} ${project.skills.join(
+      " "
+    )}`.toLowerCase();
+
+    return text.includes(search.toLowerCase());
+  });
+
   return (
     <div className="projects-page">
-
       <div className="projects-header">
-
         <div>
           <h1>Projects</h1>
           <p>Discover exciting projects and collaborate with teams.</p>
@@ -61,18 +82,19 @@ const Projects = () => {
           onClick={() => navigate("/create-team")}
         >
           <FaPlus />
-          Create Project
+          &nbsp;Create Project
         </button>
-
       </div>
 
       <div className="filter-bar">
-
         <div className="search-box">
           <FaSearch className="search-icon" />
+
           <input
             type="text"
             placeholder="Search projects..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
@@ -81,73 +103,76 @@ const Projects = () => {
           <option>Web Development</option>
           <option>Artificial Intelligence</option>
           <option>Mobile App</option>
+          <option>Machine Learning</option>
+          <option>Cyber Security</option>
+          <option>Cloud Computing</option>
+          <option>Data Science</option>
         </select>
 
         <select>
           <option>Latest</option>
           <option>Oldest</option>
         </select>
-
       </div>
 
       <div className="project-grid">
-
-        {projects.map((project) => (
-
+        {filteredProjects.map((project) => (
           <div className="project-card" key={project.id}>
-
             <div className="project-top">
-
-              <div className="project-icon">
-                {project.icon}
-              </div>
+              <div className="project-icon">{project.icon}</div>
 
               <div>
                 <h2>{project.title}</h2>
-                <span className="category">
-                  {project.category}
-                </span>
-              </div>
 
+                <span className="category">{project.category}</span>
+              </div>
             </div>
 
-            <p className="description">
-              {project.description}
-            </p>
+            <p className="description">{project.description}</p>
 
             <div className="skills">
-
               {project.skills.map((skill) => (
                 <span key={skill}>{skill}</span>
               ))}
-
             </div>
 
             <div className="project-footer">
-
               <div className="members">
                 <FaUsers />
-                {project.members}
+                &nbsp;{project.members}
               </div>
 
               <div className="buttons">
-                <button className="view-btn">
+                <button
+                  className="view-btn"
+                  onClick={() =>
+                    alert(
+                      `Project: ${project.title}
+
+Category: ${project.category}
+
+Members: ${project.members}
+
+Description:
+
+${project.description}`
+                    )
+                  }
+                >
                   View
                 </button>
 
-                <button className="join-btn">
+                <button
+                  className="join-btn"
+                  onClick={() => alert("✅ Project Joined Successfully")}
+                >
                   Join
                 </button>
               </div>
-
             </div>
-
           </div>
-
         ))}
-
       </div>
-
     </div>
   );
 };

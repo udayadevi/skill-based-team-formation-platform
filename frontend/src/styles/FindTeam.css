@@ -1,61 +1,125 @@
-.create-team-page {
-  min-height: 100vh;
-  background: #0f172a;
-  color: white;
-  padding: 40px;
+.findTeamPage{
+    min-height:100vh;
+    background:#0f172a;
+    color:white;
+    padding:40px;
 }
 
-.create-team-page h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 38px;
+.findTeamPage h1{
+    text-align:center;
+    font-size:42px;
+    margin-bottom:30px;
 }
 
-.team-form {
-  max-width: 700px;
-  margin: auto;
-  background: #1e293b;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0,0,0,.3);
+.searchSection{
+    display:flex;
+    gap:15px;
+    margin-bottom:35px;
 }
 
-.team-form label {
-  display: block;
-  margin-top: 18px;
-  margin-bottom: 8px;
-  font-weight: bold;
+.searchSection input{
+    flex:1;
+    padding:14px 18px;
+    border:none;
+    border-radius:10px;
+    background:#1e293b;
+    color:white;
+    font-size:16px;
 }
 
-.team-form input,
-.team-form textarea,
-.team-form select {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: #0f172a;
-  color: white;
-  font-size: 15px;
+.searchSection button{
+    width:170px;
+    border:none;
+    border-radius:10px;
+    background:#38bdf8;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
 
-.team-form textarea {
-  resize: none;
-  height: 120px;
+.searchSection button:hover{
+    background:#0ea5e9;
 }
 
-.team-form button {
-  width: 100%;
-  margin-top: 30px;
-  padding: 15px;
-  background: #38bdf8;
-  border: none;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
+.teamGrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+    gap:25px;
 }
 
-.team-form button:hover {
-  background: #0ea5e9;
+.teamCard{
+    background:#1e293b;
+    padding:25px;
+    border-radius:18px;
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+.teamCard:hover{
+    transform:translateY(-6px);
+}
+
+.teamCard h2{
+    margin-bottom:15px;
+    font-size:28px;
+}
+
+.teamCard p{
+    color:#d1d5db;
+    line-height:1.6;
+    margin:8px 0;
+}
+
+.description{
+    margin:18px 0;
+}
+
+.skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:20px 0;
+}
+
+.skills span{
+    background:#2563eb;
+    color:white;
+    padding:8px 16px;
+    border-radius:50px;
+    font-size:14px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+}
+
+.detailsBtn,
+.joinBtn{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.detailsBtn{
+    background:white;
+    color:#0f172a;
+}
+
+.joinBtn{
+    background:#38bdf8;
+    color:white;
+}
+
+.detailsBtn:hover{
+    background:#e5e7eb;
+}
+
+.joinBtn:hover{
+    background:#0ea5e9;
 }

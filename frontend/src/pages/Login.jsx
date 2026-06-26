@@ -22,31 +22,45 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const res = await loginUser(form);
-      const token = res.token || res.data?.token;
-      const user = res.user || res.data?.user;
-      if (remember) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-      } else {
-        sessionStorage.setItem("token", token);
-        sessionStorage.setItem("user", JSON.stringify(user));
-      }
+    const res = await loginUser(form);
 
-      toast.success("Login Successful 🚀");
-      navigate("/dashboard");
+    console.log("LOGIN RESPONSE:", res);
 
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
+    const token = res.token;
+    const user = res.user;
+
+    if (!token) {
+      toast.error("Token not received from server");
+      return;
     }
-  };
+
+    if (remember) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", JSON.stringify(user));
+    }
+
+    console.log("Local Token:", localStorage.getItem("token"));
+    console.log("Session Token:", sessionStorage.getItem("token"));
+
+    toast.success("Login Successful 🚀");
+
+    navigate("/dashboard");
+
+  } catch (error) {
+    console.error(error);
+    toast.error(error?.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="login-page">

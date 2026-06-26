@@ -165,7 +165,8 @@ export default function Register() {
 
     try {
       const payload = {
-        name: form.firstName + " " + form.lastName,
+        firstName: form.firstName,
+        lastName: form.lastName,
         email: form.email,
         password: form.password,
         role: form.role,

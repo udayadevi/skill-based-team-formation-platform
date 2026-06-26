@@ -57,6 +57,7 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       experience,
       role,
+      gender,
       github,
       linkedin,
       portfolio,

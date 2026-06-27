@@ -26,43 +26,48 @@ function Dashboard() {
     fetchUser();
 
     const createdTeams =
-  JSON.parse(localStorage.getItem("customTeams")) || [];
+      JSON.parse(localStorage.getItem("customTeams")) || [];
 
-const joinedTeams =
-  JSON.parse(localStorage.getItem("joinedTeams")) || [];
+    const joinedTeams =
+      JSON.parse(localStorage.getItem("joinedTeams")) || [];
 
-const projects =
-  JSON.parse(localStorage.getItem("customProjects")) || [];
+    const projects =
+      JSON.parse(localStorage.getItem("customProjects")) || [];
 
-setTeamCount(createdTeams.length + joinedTeams.length);
-setProjectCount(createdTeams.length);
+    // COUNTS (FIXED)
+    setTeamCount(createdTeams.length + joinedTeams.length);
+    setProjectCount(projects.length);
 
-const recent = [];
+    const recent = [];
 
-createdTeams.forEach((team) => {
-  recent.push({
-    id: team.id,
-    text: `Created Team: ${team.title}`,
-    time: "Just Now",
-  });
-});
+    // Created Teams
+    createdTeams.forEach((team) => {
+      recent.push({
+        id: `${team.id || team.title}-created-team`,
+        text: `Created Team: ${team.title}`,
+        time: "Just Now",
+      });
+    });
 
-joinedTeams.forEach((team) => {
-  recent.push({
-    id: team.id + 500,
-    text: `Joined Team: ${team.title}`,
-    time: "Just Now",
-  });
-});
+    // Joined Teams
+    joinedTeams.forEach((team) => {
+      recent.push({
+        id: `${team.id || team.title}-joined-team`,
+        text: `Joined Team: ${team.title}`,
+        time: "Just Now",
+      });
+    });
 
-createdTeams.forEach((team) => {
-  recent.push({
-    id: team.id + 1000,
-    text: `Created Project: ${team.project || team.title}`,
-    time: "Just Now",
-  });
-});
-setActivities(recent);
+    // Created Projects (FIXED SOURCE)
+    projects.forEach((project) => {
+      recent.push({
+        id: `${project.id || project.title}-project`,
+        text: `Created Project: ${project.name || project.title}`,
+        time: "Just Now",
+      });
+    });
+
+    setActivities(recent);
   }, []);
 
   const skillCount = Array.isArray(user?.skills)
@@ -73,16 +78,15 @@ setActivities(recent);
     <Layout>
       <div className="dashboard-container">
 
+        {/* HEADER */}
         <div className="dashboard-header">
           <h1>
             Welcome, {user?.name || user?.firstName || "User"} 👋
           </h1>
-
-          <p>
-            {user?.role || "Skill Based Team Member"}
-          </p>
+          <p>{user?.role || "Skill Based Team Member"}</p>
         </div>
 
+        {/* STATS */}
         <div className="stats-grid">
 
           <div className="stat-card">
@@ -97,62 +101,53 @@ setActivities(recent);
 
           <div className="stat-card">
             <h2>Projects</h2>
-            <span>{teamCount}</span>
-           </div>
+            <span>{projectCount}</span>
+          </div>
 
         </div>
 
-        <h2 className="section-title">
-          Quick Actions
-        </h2>
+        {/* QUICK ACTIONS */}
+        <h2 className="section-title">Quick Actions</h2>
 
         <div className="action-grid">
 
-          <div
-            className="action-card"
-            onClick={() => navigate("/find-team")}
-          >
+          <div className="action-card" onClick={() => navigate("/find-team")}>
             <h3>Teams</h3>
             <p>Create, Join and Manage Teams</p>
           </div>
 
-          <div
-            className="action-card"
-            onClick={() => navigate("/projects")}
-          >
+          <div className="action-card" onClick={() => navigate("/create-team")}>
+            <h3>Create Team</h3>
+            <p>Create a new team for your project</p>
+          </div>
+
+          <div className="action-card" onClick={() => navigate("/projects")}>
             <h3>Projects</h3>
             <p>View and Manage Projects</p>
           </div>
 
-          <div
-            className="action-card"
-            onClick={() => navigate("/profile")}
-          >
+          <div className="action-card" onClick={() => navigate("/profile")}>
             <h3>Profile</h3>
             <p>Update Personal Information</p>
           </div>
 
         </div>
 
+        {/* RECENT ACTIVITY */}
         <div className="recent-section">
-
           <h2>Recent Activity</h2>
 
           <div className="recent-card">
-
             {activities.length === 0 ? (
               <p>No recent activity yet.</p>
             ) : (
               activities.map((item) => (
                 <p key={item.id}>
-                  ✅ {item.text}
-                  <small> ({item.time})</small>
+                  ✅ {item.text} <small>({item.time})</small>
                 </p>
               ))
             )}
-
           </div>
-
         </div>
 
       </div>

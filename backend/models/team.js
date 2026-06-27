@@ -5,14 +5,18 @@ const teamSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true
     },
 
     description: {
       type: String,
+      required: true,
+      trim: true
     },
 
     skillsRequired: {
-      type: [String], // ["React", "Node", "MongoDB"]
+      type: [String],
+      default: []
     },
 
     members: [
@@ -21,6 +25,24 @@ const teamSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+
+    maxMembers: {
+      type: Number,
+      required: true,
+      min: 2,
+      max: 20
+    },
+
+    projectName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+
+    deadline: {
+      type: Date,
+      required: true,
+    },
 
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

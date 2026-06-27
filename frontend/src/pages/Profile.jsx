@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
+import Header from "../components/Header";
 import api from "../services/api";
 import "../styles/Profile.css";
+import { useNavigate } from "react-router-dom";
 
 import {
   FaGithub,
@@ -13,7 +14,11 @@ import {
 } from "react-icons/fa";
 
 function Profile() {
+
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -74,6 +79,9 @@ function Profile() {
     } catch (err) {
       console.log(err);
     }
+    finally {
+  setLoading(false);
+}
   };
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -125,15 +133,62 @@ function Profile() {
     }
   };
 
-  if (!user) {
-    return (
-      <Layout>
-        <div className="profile-loading">
-          Loading...
+if (loading) {
+  return (
+    <>
+      <Header />
+      <div className="profile-loading">
+        Loading...
+      </div>
+    </>
+  );
+}
+
+if (!user) {
+  return (
+    <>
+      <Header />
+
+      <div className="profile-empty">
+
+        <div className="profile-empty-card">
+
+          <div className="profile-empty-icon">
+            👤
+          </div>
+
+          <h1>Your Profile Awaits</h1>
+
+          <p>
+            Login to view your profile,
+            manage your skills,
+            join teams and collaborate on projects.
+          </p>
+
+          <div className="profile-empty-buttons">
+
+            <button
+              className="login-btn"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+
+            <button
+              className="register-btn"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </button>
+
+          </div>
+
         </div>
-      </Layout>
-    );
-  }
+
+      </div>
+    </>
+  );
+}
 
   const FEMALE =
     "https://cdn-icons-png.flaticon.com/512/4140/4140047.png";
@@ -147,7 +202,8 @@ function Profile() {
     (user.gender === "Female" ? FEMALE : MALE);
 
   return (
-    <Layout>
+    <>
+    <Header />
 
       <div className="profile-page">
 
@@ -625,7 +681,8 @@ function Profile() {
         </div>
       </div>
 
-    </Layout>
+    
+    </>
   );
 }
 

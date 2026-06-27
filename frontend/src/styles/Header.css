@@ -49,20 +49,34 @@
 }
 
 .profile-circle{
-  width:40px;
-  height:40px;
+  width: 46px;
+  height: 46px;
 
-  border-radius:50%;
+  min-width: 46px;
+  min-height: 46px;
 
-  background:#5b4bdb;
+  flex-shrink: 0;
 
-  color:white;
+  border-radius: 50%;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  font-weight:bold;
+  font-size: 20px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition: 0.3s;
+}
+
+.profile-circle:hover{
+  transform: scale(1.08);
 }
 
 .logout-btn{

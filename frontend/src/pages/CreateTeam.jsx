@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CreateTeam.css";
-import Layout from "../components/Layout";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import Header from "../components/Header";
 
 
 const CreateTeam = () => {
@@ -24,7 +24,7 @@ const CreateTeam = () => {
     meetingPlatform: "",
   });
 
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+
 
 
   const handleChange = (e) => {
@@ -84,7 +84,8 @@ const CreateTeam = () => {
   };
 
   return (
-    <Layout>
+    <>
+      <Header />
 
       <div className="create-team-page">
         <h1>🚀 Create Your Team</h1>
@@ -161,7 +162,7 @@ const CreateTeam = () => {
           </button>
         </form>
       </div>
-    </Layout>
+    </>
 
   );
 };

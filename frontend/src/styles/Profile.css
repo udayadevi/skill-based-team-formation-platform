@@ -526,3 +526,88 @@
     }
 
 }
+
+/* ================= BEFORE LOGIN ================= */
+
+.profile-empty{
+    min-height:85vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0f172a;
+    padding:40px;
+}
+
+.profile-empty-card{
+    width:500px;
+    max-width:100%;
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:18px;
+    padding:45px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+.profile-empty-icon{
+    width:90px;
+    height:90px;
+    margin:auto;
+    margin-bottom:25px;
+    border-radius:50%;
+    background:#38bdf8;
+    color:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:42px;
+    font-weight:bold;
+}
+
+.profile-empty-card h1{
+    color:#fff;
+    font-size:34px;
+    margin-bottom:15px;
+}
+
+.profile-empty-card p{
+    color:#94a3b8;
+    font-size:16px;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.profile-empty-buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+
+.profile-empty-buttons button{
+    width:160px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.login-btn{
+    background:#38bdf8;
+    color:#000;
+}
+
+.login-btn:hover{
+    background:#0ea5e9;
+}
+
+.register-btn{
+    background:#334155;
+    color:#fff;
+}
+
+.register-btn:hover{
+    background:#475569;
+}

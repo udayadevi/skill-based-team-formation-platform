@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 import {
   FaSearch,
   FaUsers,
@@ -70,12 +71,14 @@ const Projects = () => {
   });
 
   return (
-    <div className="projects-page">
-      <div className="projects-header">
-        <div>
-          <h1>Projects</h1>
-          <p>Discover exciting projects and collaborate with teams.</p>
-        </div>
+    <>
+      <Header />
+      <div className="projects-page">
+        <div className="projects-header">
+          <div>
+            <h1>Projects</h1>
+            <p>Discover exciting projects and collaborate with teams.</p>
+          </div>
 
         <button
           className="create-project-btn"
@@ -174,6 +177,7 @@ ${project.description}`
         ))}
       </div>
     </div>
+    </>
   );
 };
 

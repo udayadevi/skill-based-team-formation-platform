@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import Header from "../components/Header";
 
 import "../styles/Register.css";
 
@@ -197,6 +198,8 @@ export default function Register() {
   };
 
   return (
+    <>
+    <Header />
     <div className="register-page">
 
       {/* HEADER */}
@@ -299,41 +302,67 @@ export default function Register() {
             {/* PASSWORD */}
             <div className="row">
 
-              <div className="field password-field">
-                <label>Password *</label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  onChange={handleChange}
-                />
-                {errors.password && <span className="error">{errors.password}</span>}
-                <button
-                  type="button"
-                  className="eye-btn"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
+  <div className="field">
+    <label>Password *</label>
 
-              <div className="field password-field">
-                <label>Confirm Password *</label>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  onChange={handleChange}
-                />
-                {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
-                <button
-                  type="button"
-                  className="eye-btn"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
+    <div className="password-field">
 
-            </div>
+      <input
+        type={showPassword ? "text" : "password"}
+        name="password"
+        onChange={handleChange}
+      />
+
+      <button
+        type="button"
+        className="eye-btn"
+        onClick={() => setShowPassword(!showPassword)}
+      >
+        {showPassword ? <FiEyeOff /> : <FiEye />}
+      </button>
+
+    </div>
+
+    {errors.password && (
+      <span className="error">
+        {errors.password}
+      </span>
+    )}
+
+  </div>
+
+  <div className="field">
+    <label>Confirm Password *</label>
+
+    <div className="password-field">
+
+      <input
+        type={showConfirmPassword ? "text" : "password"}
+        name="confirmPassword"
+        onChange={handleChange}
+      />
+
+      <button
+        type="button"
+        className="eye-btn"
+        onClick={() =>
+          setShowConfirmPassword(!showConfirmPassword)
+        }
+      >
+        {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+      </button>
+
+    </div>
+
+    {errors.confirmPassword && (
+      <span className="error">
+        {errors.confirmPassword}
+      </span>
+    )}
+
+  </div>
+
+</div>
 
             {/* EXPERIENCE + ROLE */}
             <div className="row">
@@ -515,5 +544,6 @@ export default function Register() {
       </footer>
 
     </div>
+    </>
   );
 }

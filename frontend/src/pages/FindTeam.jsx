@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/FindTeam.css";
+import Header from "../components/Header";
 
 const defaultTeams = [
   {
@@ -98,7 +99,9 @@ ${team.skills.join(", ")}`
   };
 
   return (
-    <div className="findTeamPage">
+    <>
+      <Header />
+      <div className="findTeamPage">
 
       <h1>🔍 Find Your Perfect Team</h1>
 
@@ -177,6 +180,7 @@ ${team.skills.join(", ")}`
       </div>
 
     </div>
+    </>
   );
 };
 

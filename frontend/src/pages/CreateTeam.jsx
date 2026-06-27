@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CreateTeam.css";
+import Header from "../components/Header";
 
 const CreateTeam = () => {
   const navigate = useNavigate();
@@ -78,8 +79,10 @@ localStorage.setItem(
   };
 
   return (
-    <div className="create-team-page">
-      <h1>🚀 Create Your Team</h1>
+    <>
+      <Header />
+      <div className="create-team-page">
+        <h1>🚀 Create Your Team</h1>
 
       <form className="team-form" onSubmit={handleSubmit}>
         <label>Team Name</label>
@@ -191,6 +194,7 @@ localStorage.setItem(
         </button>
       </form>
     </div>
+    </>
   );
 };
 

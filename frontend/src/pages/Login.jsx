@@ -4,6 +4,7 @@ import "../styles/Login.css";
 import { loginUser } from "../services/authService";
 import { toast } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import Header from "../components/Header";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -63,8 +64,10 @@ export default function Login() {
 };
 
   return (
-    <div className="login-page">
+  <>
+    <Header />
 
+    <div className="login-page">
       <div className="login-card">
 
         <h1>Welcome Back 👋</h1>
@@ -124,5 +127,6 @@ export default function Login() {
 
       </div>
     </div>
+    </>
   );
 }

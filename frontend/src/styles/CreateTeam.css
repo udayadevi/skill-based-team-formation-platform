@@ -2,60 +2,108 @@
   min-height: 100vh;
   background: #0f172a;
   color: white;
-  padding: 40px;
+  padding: 40px 20px;
 }
 
 .create-team-page h1 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 38px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
+/* FORM CONTAINER */
 .team-form {
-  max-width: 700px;
+  max-width: 750px;
   margin: auto;
   background: #1e293b;
-  padding: 30px;
+  padding: 35px;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0,0,0,.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
 }
 
+/* LABELS */
 .team-form label {
-  display: block;
   margin-top: 18px;
   margin-bottom: 8px;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 14px;
+  color: #cbd5e1;
 }
 
+/* INPUTS / TEXTAREA / SELECT */
 .team-form input,
 .team-form textarea,
 .team-form select {
   width: 100%;
   padding: 14px;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 10px;
   background: #0f172a;
   color: white;
   font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
 }
 
+/* FOCUS EFFECT */
+.team-form input:focus,
+.team-form textarea:focus,
+.team-form select:focus {
+  border: 1px solid #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* TEXTAREA */
 .team-form textarea {
   resize: none;
   height: 120px;
 }
 
+/* BUTTON */
 .team-form button {
   width: 100%;
   margin-top: 30px;
   padding: 15px;
-  background: #38bdf8;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
   border: none;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
+  color: #fff;
+  transition: all 0.25s ease;
+  letter-spacing: 0.5px;
 }
 
+/* HOVER */
 .team-form button:hover {
-  background: #0ea5e9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+}
+
+/* DISABLED BUTTON */
+.team-form button:disabled {
+  background: #475569;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .create-team-page {
+    padding: 20px;
+  }
+
+  .team-form {
+    padding: 25px;
+  }
+
+  .create-team-page h1 {
+    font-size: 28px;
+  }
 }

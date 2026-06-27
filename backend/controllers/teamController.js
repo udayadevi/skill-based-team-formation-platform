@@ -8,25 +8,71 @@ const createTeam = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    const { name, description = "", skillsRequired = [] } = req.body;
+    const { name, projectName, description = "", skillsRequired = [], maxMembers, deadline } = req.body;
 
     if (!name?.trim()) {
       return res.status(400).json({ success: false, message: "Team name required" });
     }
 
+    if (!projectName?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Project name required"
+      });
+    }
+
+    if (!description.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Description is required"
+      });
+    }
+
+    if (!maxMembers || maxMembers < 2 || maxMembers > 20) {
+      return res.status(400).json({
+        success: false,
+        message: "Maximum members must be between 2 and 20"
+      });
+    }
+
+    if (!deadline) {
+      return res.status(400).json({
+        success: false,
+        message: "Deadline is required"
+      });
+    }
+
+    if (new Date(deadline) < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: "Deadline cannot be in the past"
+      });
+    }
+
     const team = await Team.create({
       name: name.trim(),
+      projectName: projectName.trim(),
       description,
-      skillsRequired: Array.isArray(skillsRequired) ? skillsRequired : [],
+      skillsRequired: Array.isArray(skillsRequired)
+        ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
+        : [],
+      maxMembers,
+      deadline,
       createdBy: req.user._id,
       members: [req.user._id]
     });
+
+    await team.populate(
+      "createdBy",
+      "firstName lastName email"
+    );
 
     return res.status(201).json({
       success: true,
       message: "Team created successfully",
       data: team
     });
+
 
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -37,8 +83,14 @@ const createTeam = async (req, res) => {
 const getAllTeams = async (req, res) => {
   try {
     const teams = await Team.find()
-      .populate("createdBy", "name email")
-      .populate("members", "name email");
+      .populate(
+        "createdBy",
+        "firstName lastName email"
+      )
+      .populate(
+        "members",
+        "firstName lastName email"
+      )
 
     return res.status(200).json({ success: true, data: teams });
 
@@ -57,9 +109,14 @@ const getTeamById = async (req, res) => {
     }
 
     const team = await Team.findById(id)
-      .populate("createdBy", "name email")
-      .populate("members", "name email");
-
+      .populate(
+        "createdBy",
+        "firstName lastName email"
+      )
+      .populate(
+        "members",
+        "firstName lastName email"
+      )
     if (!team) {
       return res.status(404).json({ success: false, message: "Team not found" });
     }
@@ -86,12 +143,17 @@ const joinTeam = async (req, res) => {
       return res.status(400).json({ success: false, message: "Already joined" });
     }
 
-    if (team.members.length >= 10) {
+    if (team.members.length >= team.maxMembers) {
       return res.status(400).json({ success: false, message: "Team full" });
     }
 
     team.members.push(req.user._id);
     await team.save();
+
+    await team.populate(
+      "members",
+      "firstName lastName email"
+    );
 
     return res.status(200).json({
       success: true,
@@ -124,18 +186,46 @@ const updateTeam = async (req, res) => {
       });
     }
 
-    const { name, description, skillsRequired } = req.body || {};
+    const { name, projectName, description, skillsRequired, maxMembers } = req.body || {};
+
+    if (maxMembers !== undefined) {
+      if (maxMembers < 2 || maxMembers > 20) {
+        return res.status(400).json({
+          success: false,
+          message: "Maximum members must be between 2 and 20"
+        });
+      }
+
+      if (maxMembers < team.members.length) {
+        return res.status(400).json({
+          success: false,
+          message: "Maximum members cannot be less than current team size"
+        });
+      }
+    }
 
     const updated = await Team.findByIdAndUpdate(
       req.params.id,
       {
         name: name ?? team.name,
-        description: description ?? team.description,
+        projectName: projectName?.trim() ?? team.projectName,
+        description: description?.trim() ?? team.description,
         skillsRequired: Array.isArray(skillsRequired)
-          ? skillsRequired
-          : team.skillsRequired
+          ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
+          : team.skillsRequired,
+        maxMembers: maxMembers ?? team.maxMembers
       },
       { new: true }
+    );
+
+    await updated.populate(
+      "createdBy",
+      "firstName lastName email"
+    );
+
+    await updated.populate(
+      "members",
+      "firstName lastName email"
     );
 
     return res.status(200).json({
@@ -221,6 +311,11 @@ const leaveTeam = async (req, res) => {
 
     await team.save();
 
+    await team.populate(
+      "members",
+      "firstName lastName email"
+    );
+
     return res.status(200).json({
       success: true,
       message: "Left successfully",
@@ -258,12 +353,17 @@ const addMember = async (req, res) => {
       return res.status(400).json({ success: false, message: "Already member" });
     }
 
-    if (team.members.length >= 10) {
+    if (team.members.length >= team.maxMembers) {
       return res.status(400).json({ success: false, message: "Team full" });
     }
 
     team.members.push(userId);
     await team.save();
+
+    await team.populate(
+      "members",
+      "firstName lastName email"
+    );
 
     return res.status(200).json({
       success: true,
@@ -295,8 +395,30 @@ const removeMember = async (req, res) => {
       return res.status(403).json({ success: false, message: "Not allowed , only team creator can remove member" });
     }
 
-    team.members = team.members.filter(m => m.toString() !== userId);
+    if (team.createdBy.toString() === userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot remove the team creator"
+      });
+    }
+
+    if (!team.members.some(m => m.toString() === userId)) {
+      return res.status(400).json({
+        success: false,
+        message: "User is not a member of this team"
+      });
+    }
+
+    team.members = team.members.filter(
+      m => m.toString() !== userId
+    );
+
     await team.save();
+
+    await team.populate(
+      "members",
+      "firstName lastName email"
+    );
 
     return res.status(200).json({
       success: true,

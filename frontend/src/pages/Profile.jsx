@@ -158,21 +158,23 @@ function Profile() {
   };
 
   if (loading) {
-    const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
 
-    if (!token) {
-      return <AuthPrompt />;
-    }
-
-    return (
-      <>
-        <Header />
-        <div className="profile-loading">
-          Loading...
-        </div>
-      </>
-    );
+  if (!token) {
+    return <AuthPrompt />;
   }
+
+  return (
+    <>
+      <Header />
+      <div className="profile-loading">
+        Loading...
+      </div>
+    </>
+  );
+}
 
   if (!user) {
     return (

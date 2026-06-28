@@ -10,8 +10,28 @@ import smartFiltering from "../assets/images/SmartFiltering.png";
 import teamFormation from "../assets/images/TeamFormation.png";
 
 import "../styles/Home.css";
+
 const Home = () => {
   const navigate = useNavigate();
+
+  const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
+
+  const user = JSON.parse(
+    localStorage.getItem("user") ||
+    sessionStorage.getItem("user") ||
+    "{}"
+  );
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+
+    navigate("/login");
+  };
 
   return (
     <div className="home">
@@ -34,32 +54,66 @@ const Home = () => {
             Home
           </li>
 
-          <li onClick={() => document.getElementById("about").scrollIntoView({ behavior: "smooth" })}>
+          <li
+            onClick={() =>
+              document
+                .getElementById("about")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
             About
           </li>
 
-          <li onClick={() => document.getElementById("features").scrollIntoView({ behavior: "smooth" })}>
+          <li
+            onClick={() =>
+              document
+                .getElementById("features")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
             Features
           </li>
 
           <li onClick={() => navigate("/find-team")}>
-  Find Team
-</li>
+            Find Team
+          </li>
 
-           <li onClick={() => navigate("/create-team")}>
-  Create Team
-</li>
-<li onClick={() => navigate("/projects")}>
-  Projects
-</li>
+          <li onClick={() => navigate("/create-team")}>
+            Create Team
+          </li>
 
-           <li onClick={() => navigate("/profile")}>Profile</li>
+          <li onClick={() => navigate("/projects")}>
+            Projects
+          </li>
         </ul>
 
-        {/* RIGHT BUTTONS */}
+        {/* RIGHT SIDE */}
         <div className="nav-right">
-          <button onClick={() => navigate("/login")}>Login</button>
-          <button onClick={() => navigate("/register")}>Register</button>
+          {token ? (
+            <>
+              <div
+                className="profile-icon"
+                onClick={() => navigate("/profile")}
+                title="Profile"
+              >
+                {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
+              </div>
+
+              <button onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => navigate("/login")}>
+                Login
+              </button>
+
+              <button onClick={() => navigate("/register")}>
+                Register
+              </button>
+            </>
+          )}
         </div>
 
       </nav>
@@ -71,8 +125,8 @@ const Home = () => {
           <h1>Build Better Teams Based on Skills</h1>
 
           <p>
-            SkillBasedTeam helps developers connect, collaborate, and form strong project teams
-            using intelligent skill-based matching.
+            SkillBasedTeam helps developers connect, collaborate, and form
+            strong project teams using intelligent skill-based matching.
           </p>
 
           <button onClick={() => navigate("/register")}>
@@ -86,70 +140,82 @@ const Home = () => {
 
       </section>
 
-      {/* ABOUT SECTION */}
+      {/* ABOUT */}
       <section id="about" className="about">
 
         <h2>About</h2>
 
         <p>
-          SkillBasedTeam is a platform designed to connect developers based on skills.
+          SkillBasedTeam is a platform designed to connect developers based on
+          skills.
         </p>
+
         <p>
           It helps users find the right teammates for their projects easily.
         </p>
+
         <p>
-          The system improves collaboration by matching similar or complementary skills.
+          The system improves collaboration by matching similar or complementary
+          skills.
         </p>
+
         <p>
           Users can create teams, join projects, and collaborate in real-time.
         </p>
+
         <p>
           Our goal is to make teamwork simple and efficient for developers.
         </p>
 
       </section>
 
-      {/* FEATURES SECTION */}
+      {/* FEATURES */}
       <section id="features" className="features">
 
         <h2>Features</h2>
 
         <div className="feature-box">
 
-          {/* Skill matching */}
           <div className="card">
             <img src={skillMatching} alt="Skill Matching" />
             <div>
               <h3>Skill Matching</h3>
-              <p>Our Smart algorithm matches you with people who have complementary skills</p>
+              <p>
+                Our smart algorithm matches you with people who have
+                complementary skills.
+              </p>
             </div>
           </div>
 
-          {/* 2 */}
           <div className="card">
             <img src={smartFiltering} alt="Smart Filtering" />
             <div>
               <h3>Smart Filtering</h3>
-              <p>Find users based on technologies like React, Python, JavaScript.</p>
+              <p>
+                Find users based on technologies like React, Python and
+                JavaScript.
+              </p>
             </div>
           </div>
 
-          {/* 3 */}
           <div className="card">
             <img src={collab} alt="Team Collaboration" />
             <div>
               <h3>Team Collaboration</h3>
-              {/* <p>Work together in real-time on projects efficiently</p> */}
-              <p>Get collabrated with teams based on your skills , intersts and project goals</p>
+              <p>
+                Get collaborated with teams based on your skills, interests and
+                project goals.
+              </p>
             </div>
           </div>
 
-          {/* 4 */}
           <div className="card">
             <img src={teamFormation} alt="Team Formation" />
             <div>
               <h3>Team Formation</h3>
-              <p>Create and join teams based on project requirements.</p>
+              <p>
+                Create and join teams based on project requirements.
+              </p>
             </div>
           </div>
 

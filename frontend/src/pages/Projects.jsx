@@ -72,7 +72,9 @@ const Projects = () => {
     return text.includes(search.toLowerCase());
   });
 
-  const token = localStorage.getItem("token");
+  const token =
+  localStorage.getItem("token") ||
+  sessionStorage.getItem("token");
 
   if (!token) {
     return <AuthPrompt />;

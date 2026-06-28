@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ForgotPassword from "./pages/ForgotPassword";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -21,7 +22,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* Pages handle authentication themselves */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create-team" element={<CreateTeam />} />

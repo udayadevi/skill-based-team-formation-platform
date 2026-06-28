@@ -232,9 +232,8 @@
 
   border-radius: 50%;
 
-  background: #4f46e5;
-  color: white;
-
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  color: #0f172a;
   display: flex;
   align-items: center;
   justify-content: center;

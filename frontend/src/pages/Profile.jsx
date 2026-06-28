@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import api from "../services/api";
 import "../styles/Profile.css";
 import { useNavigate } from "react-router-dom";
+import AuthPrompt from "../components/AuthPrompt";
 
 import {
   FaGithub,
@@ -43,15 +44,18 @@ function Profile() {
     fetchProfile();
   }, []);
 
+  const [teamsJoined, setTeamsJoined] = useState(0);
+  const [teamsCreated, setTeamsCreated] = useState(0);
+
   const fetchProfile = async () => {
     try {
+      // USER
       const res = await api.get("/users/me");
-
       const data = res.data.user;
 
       setUser(data);
 
-      // ✅ FIX: proper fallback order
+      // PROFILE IMAGE
       if (data.profileImage && data.profileImage !== "") {
         setProfileImage(data.profileImage);
         localStorage.setItem("profileImage", data.profileImage);
@@ -62,6 +66,7 @@ function Profile() {
         }
       }
 
+      // FORM DATA
       setFormData({
         firstName: data.firstName || "",
         lastName: data.lastName || "",
@@ -73,16 +78,35 @@ function Profile() {
         skills: data.skills?.join(", ") || "",
         preferredRole: data.preferredRole || "",
         availability: data.availability || "Available for New Projects",
-        experience: data.experience || ""
+        experience: data.experience || "",
       });
+
+      // TEAM COUNTS
+      const teamRes = await api.get("/teams");
+      const teams = teamRes.data.data || [];
+
+      const created = teams.filter(
+        (t) => t.createdBy?._id === data._id
+      );
+
+      const joined = teams.filter(
+        (t) =>
+          t.members?.some(
+            (m) => (typeof m === "string" ? m : m._id) === data._id
+          ) &&
+          t.createdBy?._id !== data._id
+      );
+
+      setTeamsCreated(created.length);
+      setTeamsJoined(joined.length);
 
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
-    finally {
-  setLoading(false);
-}
   };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
@@ -133,62 +157,68 @@ function Profile() {
     }
   };
 
-if (loading) {
-  return (
-    <>
-      <Header />
-      <div className="profile-loading">
-        Loading...
-      </div>
-    </>
-  );
-}
+  if (loading) {
+    const token = localStorage.getItem("token");
 
-if (!user) {
-  return (
-    <>
-      <Header />
+    if (!token) {
+      return <AuthPrompt />;
+    }
 
-      <div className="profile-empty">
+    return (
+      <>
+        <Header />
+        <div className="profile-loading">
+          Loading...
+        </div>
+      </>
+    );
+  }
 
-        <div className="profile-empty-card">
+  if (!user) {
+    return (
+      <>
+        <Header />
 
-          <div className="profile-empty-icon">
-            👤
-          </div>
+        <div className="profile-empty">
 
-          <h1>Your Profile Awaits</h1>
+          <div className="profile-empty-card">
 
-          <p>
-            Login to view your profile,
-            manage your skills,
-            join teams and collaborate on projects.
-          </p>
+            <div className="profile-empty-icon">
+              👤
+            </div>
 
-          <div className="profile-empty-buttons">
+            <h1>Your Profile Awaits</h1>
 
-            <button
-              className="login-btn"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
+            <p>
+              Login to view your profile,
+              manage your skills,
+              join teams and collaborate on projects.
+            </p>
 
-            <button
-              className="register-btn"
-              onClick={() => navigate("/register")}
-            >
-              Register
-            </button>
+            <div className="profile-empty-buttons">
+
+              <button
+                className="login-btn"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </button>
+
+              <button
+                className="register-btn"
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </button>
+
+            </div>
 
           </div>
 
         </div>
-
-      </div>
-    </>
-  );
-}
+      </>
+    );
+  }
 
   const FEMALE =
     "https://cdn-icons-png.flaticon.com/512/4140/4140047.png";
@@ -203,7 +233,7 @@ if (!user) {
 
   return (
     <>
-    <Header />
+      <Header />
 
       <div className="profile-page">
 
@@ -584,11 +614,13 @@ if (!user) {
           <div className="status-grid">
 
             <div className="status-box">
+              <h3>{teamsCreated}</h3>
+              <p>Teams Created</p>
+            </div>
 
-              <h3>
-                {user.teamsJoined || 0}
-              </h3>
+            <div className="status-box">
 
+              <h3>{teamsJoined}</h3>
               <p>Teams Joined</p>
 
             </div>
@@ -610,16 +642,6 @@ if (!user) {
               </h3>
 
               <p>Total Skills</p>
-
-            </div>
-
-            <div className="status-box">
-
-              <h3>
-                {user.experience || "0"}
-              </h3>
-
-              <p>Experience</p>
 
             </div>
 
@@ -681,7 +703,7 @@ if (!user) {
         </div>
       </div>
 
-    
+
     </>
   );
 }

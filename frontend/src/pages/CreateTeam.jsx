@@ -4,6 +4,7 @@ import "../styles/CreateTeam.css";
 import api from "../services/api";
 import { toast } from "react-toastify";
 import Header from "../components/Header";
+import AuthPrompt from "../components/AuthPrompt";
 
 
 const CreateTeam = () => {
@@ -82,6 +83,12 @@ const CreateTeam = () => {
       setLoading(false);
     }
   };
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <AuthPrompt />;
+  }
 
   return (
     <>

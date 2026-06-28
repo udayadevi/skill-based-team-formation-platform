@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import AuthPrompt from "../components/AuthPrompt";
+
 import {
   FaSearch,
   FaUsers,
@@ -70,6 +72,12 @@ const Projects = () => {
     return text.includes(search.toLowerCase());
   });
 
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <AuthPrompt />;
+  }
+
   return (
     <>
       <Header />
@@ -80,77 +88,77 @@ const Projects = () => {
             <p>Discover exciting projects and collaborate with teams.</p>
           </div>
 
-        <button
-          className="create-project-btn"
-          onClick={() => navigate("/create-team")}
-        >
-          <FaPlus />
-          &nbsp;Create Project
-        </button>
-      </div>
-
-      <div className="filter-bar">
-        <div className="search-box">
-          <FaSearch className="search-icon" />
-
-          <input
-            type="text"
-            placeholder="Search projects..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <button
+            className="create-project-btn"
+            onClick={() => navigate("/create-team")}
+          >
+            <FaPlus />
+            &nbsp;Create Project
+          </button>
         </div>
 
-        <select>
-          <option>All Categories</option>
-          <option>Web Development</option>
-          <option>Artificial Intelligence</option>
-          <option>Mobile App</option>
-          <option>Machine Learning</option>
-          <option>Cyber Security</option>
-          <option>Cloud Computing</option>
-          <option>Data Science</option>
-        </select>
+        <div className="filter-bar">
+          <div className="search-box">
+            <FaSearch className="search-icon" />
 
-        <select>
-          <option>Latest</option>
-          <option>Oldest</option>
-        </select>
-      </div>
+            <input
+              type="text"
+              placeholder="Search projects..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
 
-      <div className="project-grid">
-        {filteredProjects.map((project) => (
-          <div className="project-card" key={project.id}>
-            <div className="project-top">
-              <div className="project-icon">{project.icon}</div>
+          <select>
+            <option>All Categories</option>
+            <option>Web Development</option>
+            <option>Artificial Intelligence</option>
+            <option>Mobile App</option>
+            <option>Machine Learning</option>
+            <option>Cyber Security</option>
+            <option>Cloud Computing</option>
+            <option>Data Science</option>
+          </select>
 
-              <div>
-                <h2>{project.title}</h2>
+          <select>
+            <option>Latest</option>
+            <option>Oldest</option>
+          </select>
+        </div>
 
-                <span className="category">{project.category}</span>
-              </div>
-            </div>
+        <div className="project-grid">
+          {filteredProjects.map((project) => (
+            <div className="project-card" key={project.id}>
+              <div className="project-top">
+                <div className="project-icon">{project.icon}</div>
 
-            <p className="description">{project.description}</p>
+                <div>
+                  <h2>{project.title}</h2>
 
-            <div className="skills">
-              {project.skills.map((skill) => (
-                <span key={skill}>{skill}</span>
-              ))}
-            </div>
-
-            <div className="project-footer">
-              <div className="members">
-                <FaUsers />
-                &nbsp;{project.members}
+                  <span className="category">{project.category}</span>
+                </div>
               </div>
 
-              <div className="buttons">
-                <button
-                  className="view-btn"
-                  onClick={() =>
-                    alert(
-                      `Project: ${project.title}
+              <p className="description">{project.description}</p>
+
+              <div className="skills">
+                {project.skills.map((skill) => (
+                  <span key={skill}>{skill}</span>
+                ))}
+              </div>
+
+              <div className="project-footer">
+                <div className="members">
+                  <FaUsers />
+                  &nbsp;{project.members}
+                </div>
+
+                <div className="buttons">
+                  <button
+                    className="view-btn"
+                    onClick={() =>
+                      alert(
+                        `Project: ${project.title}
 
 Category: ${project.category}
 
@@ -159,24 +167,24 @@ Members: ${project.members}
 Description:
 
 ${project.description}`
-                    )
-                  }
-                >
-                  View
-                </button>
+                      )
+                    }
+                  >
+                    View
+                  </button>
 
-                <button
-                  className="join-btn"
-                  onClick={() => alert("✅ Project Joined Successfully")}
-                >
-                  Join
-                </button>
+                  <button
+                    className="join-btn"
+                    onClick={() => alert("✅ Project Joined Successfully")}
+                  >
+                    Join
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 };

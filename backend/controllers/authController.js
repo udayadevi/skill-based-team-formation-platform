@@ -62,8 +62,9 @@ const registerUser = async (req, res) => {
       linkedin,
       portfolio,
       bio,
-      skills:
-        typeof skills === "string"
+      skills: Array.isArray(skills)
+        ? skills
+        : typeof skills === "string"
           ? skills.split(",").map((s) => s.trim()).filter(Boolean)
           : [],
     });

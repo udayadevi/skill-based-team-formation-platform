@@ -1,5 +1,6 @@
 const Team = require("../models/Team");
 const mongoose = require("mongoose");
+const User = require("../models/User");
 
 /* ================= CREATE TEAM ================= */
 const createTeam = async (req, res) => {
@@ -149,6 +150,10 @@ const joinTeam = async (req, res) => {
 
     team.members.push(req.user._id);
     await team.save();
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { teamsJoined: 1 },
+    });
 
     await team.populate(
       "members",

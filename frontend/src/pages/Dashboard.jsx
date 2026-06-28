@@ -7,69 +7,73 @@ import API from "../services/api";
 function Dashboard() {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState({});
-  const [activities, setActivities] = useState([]);
+const [user, setUser] = useState({});
+const [activities, setActivities] = useState([]);
 
-  const [teamCount, setTeamCount] = useState(0);
-  const [projectCount, setProjectCount] = useState(0);
+const [teamCount, setTeamCount] = useState(0);
+const [projectCount, setProjectCount] = useState(0);
 
-  useEffect(() => {
-    const fetchUser = async () => {
+useEffect(() => {
+  const fetchAll = async () => {
+    try {
+      const userRes = await API.get("/users/me");
+      const userData = userRes.data?.user || userRes.data || {};
+      setUser(userData);
+
+      const teamRes = await API.get("/teams");
+      const teams = teamRes.data?.data || [];
+
+      const createdTeams = teams.filter(
+        (t) => t.createdBy?._id === userData._id
+      );
+
+      const joinedTeams = teams.filter(
+        (t) =>
+          t.members?.some(
+            (m) => (typeof m === "string" ? m : m._id) === userData._id
+          ) && t.createdBy?._id !== userData._id
+      );
+
+      setTeamCount(createdTeams.length + joinedTeams.length);
+
+      // projects safe fetch
+      let projectCountValue = 0;
       try {
-        const res = await API.get("/users/me");
-        setUser(res.data?.user || res.data || {});
+        const projectRes = await API.get("/projects");
+        projectCountValue = projectRes.data?.length || 0;
       } catch (err) {
-        console.log(err);
+        projectCountValue = 0;
       }
-    };
 
-    fetchUser();
+      setProjectCount(projectCountValue);
 
-    const createdTeams =
-      JSON.parse(localStorage.getItem("customTeams")) || [];
+      // activity
+      const recent = [];
 
-    const joinedTeams =
-      JSON.parse(localStorage.getItem("joinedTeams")) || [];
-
-    const projects =
-      JSON.parse(localStorage.getItem("customProjects")) || [];
-
-    // COUNTS (FIXED)
-    setTeamCount(createdTeams.length + joinedTeams.length);
-    setProjectCount(projects.length);
-
-    const recent = [];
-
-    // Created Teams
-    createdTeams.forEach((team) => {
-      recent.push({
-        id: `${team.id || team.title}-created-team`,
-        text: `Created Team: ${team.title}`,
-        time: "Just Now",
+      createdTeams.forEach((t) => {
+        recent.push({
+          id: t._id,
+          text: `Created Team: ${t.name}`,
+          time: new Date(t.createdAt || Date.now()).toLocaleString(),
+        });
       });
-    });
 
-    // Joined Teams
-    joinedTeams.forEach((team) => {
-      recent.push({
-        id: `${team.id || team.title}-joined-team`,
-        text: `Joined Team: ${team.title}`,
-        time: "Just Now",
+      joinedTeams.forEach((t) => {
+        recent.push({
+          id: t._id + "-join",
+          text: `Joined Team: ${t.name}`,
+          time: new Date(t.updatedAt || Date.now()).toLocaleString(),
+        });
       });
-    });
 
-    // Created Projects (FIXED SOURCE)
-    projects.forEach((project) => {
-      recent.push({
-        id: `${project.id || project.title}-project`,
-        text: `Created Project: ${project.name || project.title}`,
-        time: "Just Now",
-      });
-    });
+      setActivities(recent.reverse());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    setActivities(recent);
-  }, []);
-
+  fetchAll();
+}, []);
   const skillCount = Array.isArray(user?.skills)
     ? user.skills.length
     : 0;

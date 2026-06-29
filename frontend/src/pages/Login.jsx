@@ -23,110 +23,112 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const res = await loginUser(form);
+      const res = await loginUser(form);
 
-    console.log("LOGIN RESPONSE:", res);
+      console.log("LOGIN RESPONSE:", res);
 
-    const token = res.token;
-    const user = res.user;
+      // ✅ FIXED: res already contains data
+      const token = res.token || res.data?.token;
+      const user = res.user || res.data?.user;
 
-    if (!token) {
-      toast.error("Token not received from server");
-      return;
+      if (!token) {
+        toast.error("Token not received from server");
+        return;
+      }
+
+      if (remember) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+      } else {
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("user", JSON.stringify(user));
+      }
+
+      console.log("Local Token:", localStorage.getItem("token"));
+      console.log("Session Token:", sessionStorage.getItem("token"));
+
+      toast.success("Login Successful 🚀");
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
-
-    if (remember) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      sessionStorage.setItem("token", token);
-      sessionStorage.setItem("user", JSON.stringify(user));
-    }
-
-    console.log("Local Token:", localStorage.getItem("token"));
-    console.log("Session Token:", sessionStorage.getItem("token"));
-
-    toast.success("Login Successful 🚀");
-
-    navigate("/dashboard");
-
-  } catch (error) {
-    console.error(error);
-    toast.error(error?.response?.data?.message || "Login failed");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
-  <>
-    <Header />
+    <>
+      <Header />
 
-    <div className="login-page">
-      <div className="login-card">
+      <div className="login-page">
+        <div className="login-card">
 
-        <h1>Welcome Back 👋</h1>
-        <p>Login to continue your journey</p>
+          <h1>Welcome Back 👋</h1>
+          <p>Login to continue your journey</p>
 
-        <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
 
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            required
-          />
-
-          <div className="password-field">
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
+              name="email"
+              placeholder="Email"
               onChange={handleChange}
               required
             />
 
-            <button
-              type="button"
-              className="eye-btn"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FiEyeOff /> : <FiEye />}
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                required
+              />
+
+              <button
+                type="button"
+                className="eye-btn"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+
+            </div>
+
+            <div className="login-options">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={() => setRemember(!remember)}
+                />
+                Remember me
+              </label>
+
+              <Link to="/forgot-password">
+                Forgot password?
+              </Link>
+            </div>
+
+            <button disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
             </button>
 
-          </div>
-          <div className="login-options">
-            <label>
-              <input
-                type="checkbox"
-                checked={remember}
-                onChange={() => setRemember(!remember)}
-              />
-              Remember me
-            </label>
+            <p className="bottom-text">
+              Don't have account? <Link to="/register">Register</Link>
+            </p>
 
-            <Link to="/forgot-password">
-              Forgot password?
-            </Link>
-          </div>
+          </form>
 
-          <button disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-
-          <p className="bottom-text">
-            Don't have account? <Link to="/register">Register</Link>
-          </p>
-
-        </form>
-
+        </div>
       </div>
-    </div>
     </>
   );
 }

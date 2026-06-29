@@ -7,6 +7,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import VerifyOtp from "./pages/VerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
+
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import CreateTeam from "./pages/CreateTeam";
@@ -23,6 +26,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         {/* Pages handle authentication themselves */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create-team" element={<CreateTeam />} />

@@ -1,6 +1,6 @@
 const Team = require("../models/Team");
 const mongoose = require("mongoose");
-const User = require("../models/user");
+const User = require("../models/User");
 
 /* ================= CREATE TEAM ================= */
 const createTeam = async (req, res) => {

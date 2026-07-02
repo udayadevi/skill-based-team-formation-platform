@@ -6,77 +6,105 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import "../styles/ResetPassword.css";
 
 function ResetPassword() {
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const location = useLocation();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const email =
-        location.state?.email ||
-        sessionStorage.getItem("resetEmail");
+  const email =
+    location.state?.email ||
+    sessionStorage.getItem("resetEmail");
 
-    const handleReset = async (e) => {
-        e.preventDefault();
+  const handleReset = async (e) => {
+    e.preventDefault();
 
+    if (!email) {
+      toast.error("Session expired. Please request OTP again.");
+      navigate("/forgot-password");
+      return;
+    }
 
-        if (!password || password.length < 6) {
-            toast.error("Password must be at least 6 characters");
-            return;
-        }
+    if (!password || password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
 
-        setLoading(true);
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
 
-        try {
-            const res = await api.post("/auth/reset-password", {
-                email,
-                newPassword: password,
-            });
+    try {
+      setLoading(true);
 
-            toast.success(res.data.message);
+      const res = await api.post("/auth/reset-password", {
+        email,
+        newPassword: password,
+      });
 
-            sessionStorage.removeItem("resetEmail");
+      toast.success(res.data.message);
 
-            navigate("/login");
+      sessionStorage.removeItem("resetEmail");
 
-        } catch (err) {
-            toast.error(err.response?.data?.message || "Reset failed");
-        }
-        finally {
-            setLoading(false);
-        }
-    };
+      navigate("/login");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Reset failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-  <div className="auth-container">
-    <div className="auth-card">
-      <h2>Reset Password</h2>
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>Reset Password</h2>
 
-      <form onSubmit={handleReset}>
-        <div className="password-field">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="New Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <form onSubmit={handleReset}>
 
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="eye-btn"
-          >
-            {showPassword ? <FiEyeOff /> : <FiEye />}
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="eye-btn"
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
+          </div>
+
+          <div className="password-field">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="eye-btn"
+            >
+              {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Resetting..." : "Reset Password"}
           </button>
-        </div>
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Resetting..." : "Reset Password"}
-        </button>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default ResetPassword;

@@ -2,10 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -30,7 +31,7 @@ html, body {
   padding: 30px;
   background: #111827;
   border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   text-align: center;
   color: white;
 }
@@ -55,9 +56,16 @@ html, body {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
-  border: none;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
   border-radius: 6px;
   outline: none;
+}
+
+.auth-card input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, .2);
 }
 
 /* BUTTON */
@@ -77,6 +85,11 @@ html, body {
   background: #1d4ed8;
 }
 
+.auth-card button:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
 /* =========================
    PASSWORD FIELD (FINAL FIX)
 ========================= */
@@ -90,7 +103,9 @@ html, body {
 .password-field input {
   width: 100%;
   padding: 12px 40px 12px 12px;
-  border: none;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
   border-radius: 6px;
   outline: none;
 }

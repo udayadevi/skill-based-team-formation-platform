@@ -5,7 +5,6 @@ import Header from "../components/Header";
 
 import "../styles/Register.css";
 
-import logo from "../assets/images/logo.png";
 import hero_processed from "../assets/images/MainImage_processed.png";
 import Search from "../assets/images/Search.png";
 import buildYourTeam from "../assets/images/BuildYourTeam.png";
@@ -181,8 +180,7 @@ export default function Register() {
         mobile: form.mobile
       };
 
-      const res = await registerUser(payload);
-
+      await registerUser(payload);
       toast.success("Registration Successful 🚀");
 
       navigate("/login");
@@ -199,351 +197,350 @@ export default function Register() {
 
   return (
     <>
-    <Header />
-    <div className="register-page">
+      <Header />
+      <div className="register-page">
 
-      {/* HEADER */}
-      <header className="register-header">
-        <div className="brand">
-          <img src={logo} alt="logo" />
-          <div>
-            <h2>SkillBasedTeam</h2>
-            <p>Create • Build • Connect</p>
+        {/* CONTENT */}
+        <div className="register-content">
+
+          {/* LEFT SIDE */}
+          <div className="left-panel">
+
+            <div className="left-title">
+              <h1>Create Your Account and Start Your Journey</h1>
+              <p> Join thousands of students and professionals who are building amazing projects together based on skills and passion.</p>
+            </div>
+
+            <div className="hero-box">
+              <img src={hero_processed} alt="hero" />
+            </div>
+
+            <div className="why-section">
+              <h2>Why Join SkillBasedTeam ?</h2>
+
+              <div className="feature-card">
+                <img src={Search} alt="" />
+                <div>
+                  <h3>Find Right People</h3>
+                  <p>Find teammates based on skills.</p>
+                </div>
+              </div>
+
+              <div className="feature-card">
+                <img src={buildYourTeam} alt="" />
+                <div>
+                  <h3>Build Your Team</h3>
+                  <p>Build a strong project team for your project.</p>
+                </div>
+              </div>
+
+              <div className="feature-card">
+                <img src={achieveGoals} alt="" />
+                <div>
+                  <h3>Achieve Goals</h3>
+                  <p>Collaborate and bring your ideas to life.</p>
+                </div>
+              </div>
+
+            </div>
           </div>
-        </div>
-      </header>
 
-      {/* CONTENT */}
-      <div className="register-content">
+          {/* RIGHT SIDE */}
+          <div className="right-panel">
 
-        {/* LEFT SIDE */}
-        <div className="left-panel">
+            <form className="form-card" onSubmit={handleSubmit}>
 
-          <div className="left-title">
-            <h1>Create Your Account and Start Your Journey</h1>
-            <p> Join thousands of students and professionals who are building amazing projects together based on skills and passion.</p>
-          </div>
+              <h1>Create Your Account</h1>
+              <p>Fill your details to get started</p>
 
-          <div className="hero-box">
-            <img src={hero_processed} alt="hero" />
-          </div>
+              {/* Full Name 1 */}
+              <div className="row">
+                <div className="field">
+                  <label>First Name *</label>
+                  <input name="firstName" onChange={handleChange} />
 
-          <div className="why-section">
-            <h2>Why Join SkillBasedTeam ?</h2>
+                  {errors.firstName && (
+                    <span className="error">{errors.firstName}</span>
+                  )}
+                </div>
 
-            <div className="feature-card">
-              <img src={Search} alt="" />
-              <div>
-                <h3>Find Right People</h3>
-                <p>Find teammates based on skills.</p>
-              </div>
-            </div>
-
-            <div className="feature-card">
-              <img src={buildYourTeam} alt="" />
-              <div>
-                <h3>Build Your Team</h3>
-                <p>Build strong project team for your project.</p>
-              </div>
-            </div>
-
-            <div className="feature-card">
-              <img src={achieveGoals} alt="" />
-              <div>
-                <h3>Achieve Goals</h3>
-                <p>Collabrate and bring your ideas to life.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className="right-panel">
-
-          <form className="form-card" onSubmit={handleSubmit}>
-
-            <h1>Create Your Account</h1>
-            <p>Fill your details to get started</p>
-
-            {/* Full Name 1 */}
-            <div className="row">
-              <div className="field">
-                <label>First Name *</label>
-                <input name="firstName" onChange={handleChange} />
-
-                {errors.firstName && (
-                  <span className="error">{errors.firstName}</span>
-                )}
+                <div className="field">
+                  <label>Last Name *</label>
+                  <input name="lastName" onChange={handleChange} />
+                  {errors.lastName && <span className="error">{errors.lastName}</span>}
+                </div>
               </div>
 
-              <div className="field">
-                <label>Last Name *</label>
-                <input name="lastName" onChange={handleChange} />
-                {errors.lastName && <span className="error">{errors.lastName}</span>}
-              </div>
-            </div>
+              {/* EMAIL + MOBILE */}
+              <div className="row">
+                <div className="field">
+                  <label>Email *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    onChange={handleChange}
+                  />
+                  {errors.email && <span className="error">{errors.email}</span>}
+                </div>
 
-            {/* EMAIL + MOBILE */}
-            <div className="row">
-              <div className="field">
-                <label>Email *</label>
-                <input name="email" onChange={handleChange} />
-                {errors.email && <span className="error">{errors.email}</span>}
-              </div>
-
-              <div className="field">
-                <label>Mobile *</label>
-                <input name="mobile" onChange={handleChange} />
-                {errors.mobile && <span className="error">{errors.mobile}</span>}
-              </div>
-            </div>
-
-            {/* PASSWORD */}
-            <div className="row">
-
-  <div className="field">
-    <label>Password *</label>
-
-    <div className="password-field">
-
-      <input
-        type={showPassword ? "text" : "password"}
-        name="password"
-        onChange={handleChange}
-      />
-
-      <button
-        type="button"
-        className="eye-btn"
-        onClick={() => setShowPassword(!showPassword)}
-      >
-        {showPassword ? <FiEyeOff /> : <FiEye />}
-      </button>
-
-    </div>
-
-    {errors.password && (
-      <span className="error">
-        {errors.password}
-      </span>
-    )}
-
-  </div>
-
-  <div className="field">
-    <label>Confirm Password *</label>
-
-    <div className="password-field">
-
-      <input
-        type={showConfirmPassword ? "text" : "password"}
-        name="confirmPassword"
-        onChange={handleChange}
-      />
-
-      <button
-        type="button"
-        className="eye-btn"
-        onClick={() =>
-          setShowConfirmPassword(!showConfirmPassword)
-        }
-      >
-        {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-      </button>
-
-    </div>
-
-    {errors.confirmPassword && (
-      <span className="error">
-        {errors.confirmPassword}
-      </span>
-    )}
-
-  </div>
-
-</div>
-
-            {/* EXPERIENCE + ROLE */}
-            <div className="row">
-
-              <div className="field">
-                <label>Experience *</label>
-                <select name="experience" onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option>Beginner</option>
-                  <option>Intermediate</option>
-                  <option>Advanced</option>
-                </select>
-                {errors.experience && (
-                  <span className="error">
-                    {errors.experience}
-                  </span>
-                )}
+                <div className="field">
+                  <label>Mobile *</label>
+                  <input
+                    type="tel"
+                    name="mobile"
+                    maxLength={10}
+                    onChange={handleChange}
+                  />
+                  {errors.mobile && <span className="error">{errors.mobile}</span>}
+                </div>
               </div>
 
-              <div className="field">
-                <label>Preferred Role *</label>
-                <select name="role" onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option>Frontend Developer</option>
-                  <option>Backend Developer</option>
-                  <option>Full Stack Developer</option>
-                  <option>AI/ML Engineer</option>
-                  <option>DevOps</option>
-                  <option>Other</option>
-                </select>
-                {errors.role && (
-                  <span className="error">
-                    {errors.role}
-                  </span>
-                )}
-              </div>
+              {/* PASSWORD */}
+              <div className="row">
 
-            </div>
+                <div className="field">
+                  <label>Password *</label>
 
-            {/* SKILLS */}
-            <div className="row">
+                  <div className="password-field">
 
-              <div className="field">
-                <label>Skills *</label>
-                <input
-                  name="skills"
-                  onChange={handleChange}
-                />
-                {errors.skills && (
-                  <span className="error">{errors.skills}</span>
-                )}
-              </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      onChange={handleChange}
+                    />
 
-              <div className="field">
-                <label>Gender *</label>
-                <select
-                  name="gender"
-                  onChange={handleChange}
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-
-                {errors.gender && (
-                  <span className="error">{errors.gender}</span>
-                )}
-              </div>
-
-            </div>
-            <br />
-
-            {/* LINKS */}
-            <div className="row">
-              <div className="field">
-                <label>GitHub</label>
-                <input name="github" onChange={handleChange} />
-              </div>
-
-              <div className="field">
-                <label>LinkedIn</label>
-                <input name="linkedin" onChange={handleChange} />
-              </div>
-            </div>
-
-            {/* PORTFOLIO + BIO */}
-            <div className="row">
-              <div className="field">
-                <label>Portfolio</label>
-                <input name="portfolio" onChange={handleChange} />
-              </div>
-
-              <div className="field">
-                <label>Bio</label>
-                <textarea name="bio" onChange={handleChange} />
-              </div>
-            </div>
-            {/* TERMS */}
-            <div className="terms">
-              <input
-                type="checkbox"
-                checked={agree}
-                disabled={!termsRead}
-                onChange={() => setAgree(!agree)}
-              />
-
-              <span
-                className="terms-link"
-                onClick={() => setShowTerms(true)}
-              >
-                Terms & Conditions
-              </span>
-            </div>
-
-            {/* BUTTON */}
-            <button
-              type="submit"
-              className="create-btn"
-              disabled={loading}
-            >
-              {loading ? "Creating Account..." : "Create Account"}
-            </button>
-
-            {/* TERMS MODAL */}
-            {showTerms && (
-              <div className="modal-overlay">
-                <div className="terms-modal">
-
-                  <h2>Terms & Conditions</h2>
-
-                  <div className="terms-content">
-
-                    <p>
-                      Welcome to SkillBasedTeam. By creating an account, you agree to the
-                      following terms:
-                    </p>
-
-                    <ol>
-                      <li>Provide accurate and truthful information.</li>
-                      <li>Do not create fake or duplicate accounts.</li>
-                      <li>Respect all members of the platform.</li>
-                      <li>Do not upload harmful or illegal content.</li>
-                      <li>Your account may be suspended for violating these rules.</li>
-                      <li>Your personal information will only be used for platform functionality.</li>
-                      <li>We may update these Terms & Conditions from time to time.</li>
-
-                    </ol>
+                    <button
+                      type="button"
+                      className="eye-btn"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <FiEyeOff /> : <FiEye />}
+                    </button>
 
                   </div>
 
-                  <button
-                    type="button"
-                    className="close-btn"
-                    onClick={() => {
-                      setTermsRead(true);
-                      setShowTerms(false);
-                    }}
-                  >
-                    I Have Read & Close
-                  </button>
+                  {errors.password && (
+                    <span className="error">
+                      {errors.password}
+                    </span>
+                  )}
 
                 </div>
+
+                <div className="field">
+                  <label>Confirm Password *</label>
+
+                  <div className="password-field">
+
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      onChange={handleChange}
+                    />
+
+                    <button
+                      type="button"
+                      className="eye-btn"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                    </button>
+
+                  </div>
+
+                  {errors.confirmPassword && (
+                    <span className="error">
+                      {errors.confirmPassword}
+                    </span>
+                  )}
+
+                </div>
+
               </div>
-            )}
 
-            <div className="login-text">
-              Already have an account? <Link to="/login">Login here</Link>
-            </div>
+              {/* EXPERIENCE + ROLE */}
+              <div className="row">
 
-          </form>
+                <div className="field">
+                  <label>Experience *</label>
+                  <select name="experience" onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                  </select>
+                  {errors.experience && (
+                    <span className="error">
+                      {errors.experience}
+                    </span>
+                  )}
+                </div>
+
+                <div className="field">
+                  <label>Preferred Role *</label>
+                  <select name="role" onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option>Frontend Developer</option>
+                    <option>Backend Developer</option>
+                    <option>Full Stack Developer</option>
+                    <option>AI/ML Engineer</option>
+                    <option>DevOps</option>
+                    <option>Other</option>
+                  </select>
+                  {errors.role && (
+                    <span className="error">
+                      {errors.role}
+                    </span>
+                  )}
+                </div>
+
+              </div>
+
+              {/* SKILLS */}
+              <div className="row">
+
+                <div className="field">
+                  <label>Skills *</label>
+                  <input
+                    name="skills"
+                    placeholder="React, Node.js, MongoDB"
+                    onChange={handleChange}
+                  />
+                  {errors.skills && (
+                    <span className="error">{errors.skills}</span>
+                  )}
+                </div>
+
+                <div className="field">
+                  <label>Gender *</label>
+                  <select
+                    name="gender"
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+
+                  {errors.gender && (
+                    <span className="error">{errors.gender}</span>
+                  )}
+                </div>
+
+              </div>
+              <br />
+
+              {/* LINKS */}
+              <div className="row">
+                <div className="field">
+                  <label>GitHub</label>
+                  <input type="url" name="github" onChange={handleChange} />
+                </div>
+
+                <div className="field">
+                  <label>LinkedIn</label>
+                  <input type="url" name="linkedin" onChange={handleChange} />
+                </div>
+              </div>
+
+              {/* PORTFOLIO + BIO */}
+              <div className="row">
+                <div className="field">
+                  <label>Portfolio</label>
+                  <input type="url" name="portfolio" onChange={handleChange} />
+                </div>
+
+                <div className="field">
+                  <label>Bio</label>
+                  <textarea name="bio" onChange={handleChange} />
+                </div>
+              </div>
+              {/* TERMS */}
+              <div className="terms">
+                <input
+                  type="checkbox"
+                  checked={agree}
+                  disabled={!termsRead}
+                  onChange={() => setAgree(!agree)}
+                />
+
+                <span
+                  className="terms-link"
+                  onClick={() => setShowTerms(true)}
+                >
+                  Terms & Conditions
+                </span>
+              </div>
+
+              {/* BUTTON */}
+              <button
+                type="submit"
+                className="create-btn"
+                disabled={loading}
+              >
+                {loading ? "Creating Account..." : "Create Account"}
+              </button>
+
+              {/* TERMS MODAL */}
+              {showTerms && (
+                <div className="modal-overlay">
+                  <div className="terms-modal">
+
+                    <h2>Terms & Conditions</h2>
+
+                    <div className="terms-content">
+
+                      <p>
+                        Welcome to SkillBasedTeam. By creating an account, you agree to the
+                        following terms:
+                      </p>
+
+                      <ol>
+                        <li>Provide accurate and truthful information.</li>
+                        <li>Do not create fake or duplicate accounts.</li>
+                        <li>Respect all members of the platform.</li>
+                        <li>Do not upload harmful or illegal content.</li>
+                        <li>Your account may be suspended for violating these rules.</li>
+                        <li>Your personal information will only be used for platform functionality.</li>
+                        <li>We may update these Terms & Conditions from time to time.</li>
+
+                      </ol>
+
+                    </div>
+
+                    <button
+                      type="button"
+                      className="close-btn"
+                      onClick={() => {
+                        setTermsRead(true);
+                        setShowTerms(false);
+                      }}
+                    >
+                      I Have Read & Close
+                    </button>
+
+                  </div>
+                </div>
+              )}
+
+              <div className="login-text">
+                Already have an account? <Link to="/login">Login here</Link>
+              </div>
+
+            </form>
+
+          </div>
 
         </div>
 
+        {/* FOOTER */}
+        <footer className="register-footer">
+          © 2026 SkillBasedTeam | All Rights Reserved
+        </footer>
+
       </div>
-
-      {/* FOOTER */}
-      <footer className="register-footer">
-        © 2026 SkillBasedTeam | All Rights Reserved
-      </footer>
-
-    </div>
     </>
   );
 }

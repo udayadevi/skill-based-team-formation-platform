@@ -17,33 +17,6 @@
   flex-direction:column;
 }
 
-/* ================= HEADER ================= */
-
-.register-header{
-  background:#111827;
-  padding:18px 40px;
-  border-bottom:1px solid #1e293b;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.brand img{
-  width:42px;
-}
-
-.brand h2{
-  font-size:24px;
-}
-
-.brand p{
-  color:#94a3b8;
-  font-size:13px;
-}
-
 /* ================= CONTENT ================= */
 
 .register-content{
@@ -181,12 +154,15 @@ textarea{
   color:#fff;
   outline:none;
   transition:0.3s;
+  font-size:16px;
+  transition:border-color .3s, box-shadow .3s;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
   border-color:#38bdf8;
+   box-shadow:0 0 0 2px rgba(56,189,248,.2);
 }
 
 textarea{
@@ -244,87 +220,6 @@ textarea{
   height: 18px;
 }
 
-
-/* ================= SKILLS BOX (FINAL) ================= */
-
-.skills-box{
-  background:#0f172a;
-  border:1px solid #334155;
-  border-radius:12px;
-  padding:15px;
-  margin-top:10px;
-}
-
-.skills-container{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-
-.skill-btn{
-  padding:8px 12px;
-  border-radius:20px;
-  border:1px solid #334155;
-  background:#1e293b;
-  color:#cbd5e1;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.skill-btn:hover{
-  border-color:#38bdf8;
-  color:#fff;
-}
-
-.skill-btn.active{
-  background:#38bdf8;
-  color:#000;
-  font-weight:600;
-}
-
-/* CUSTOM SKILL INPUT */
-
-.custom-skill-box{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
-}
-
-.custom-skill-box input{
-  flex:1;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid #334155;
-  background:#0f172a;
-  color:#fff;
-}
-
-.custom-skill-box button{
-  padding:10px 14px;
-  background:#38bdf8;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.custom-skill-box button:hover{
-  background:#0ea5e9;
-}
-
-/* SELECTED SKILLS */
-
-.skill-chip{
-  display:inline-block;
-  margin-top:10px;
-  margin-right:6px;
-  padding:6px 10px;
-  background:#38bdf8;
-  color:#000;
-  border-radius:20px;
-  font-size:12px;
-}
-
 /* TERMS */
 
 .terms{
@@ -362,6 +257,10 @@ textarea{
 
 .create-btn:hover{
   background:#0ea5e9;
+}
+.create-btn:disabled{
+  opacity:.7;
+  cursor:not-allowed;
 }
 
 /* LOGIN */
@@ -428,13 +327,6 @@ textarea{
   font-size: 12px;
   margin-top: 4px;
   display: block;
-}
-
-.terms-note{
-  display:block;
-  color:red;
-  font-size:12px;
-  margin-top:4px;
 }
 
 .terms input:disabled{
@@ -533,4 +425,11 @@ textarea{
 
 .close-btn:hover {
   background: #0ea5e9;
+}
+
+@media(max-width:600px){
+  .terms-modal{
+    width:95%;
+    padding:20px;
+  }
 }

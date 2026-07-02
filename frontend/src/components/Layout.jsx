@@ -11,23 +11,25 @@ function Layout({ children }) {
     "{}"
   );
 
-const handleLogout = () => {
-  const savedImage = localStorage.getItem("profileImage");
+  const handleLogout = () => {
+    const savedImage =
+      localStorage.getItem("profileImage") ||
+      sessionStorage.getItem("profileImage");
 
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  sessionStorage.removeItem("token");
-  sessionStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
 
-  // 🔥 keep profile image safe
-  if (savedImage) {
-    localStorage.setItem("profileImage", savedImage);
-  }
+    // 🔥 keep profile image safe
+    if (savedImage) {
+      localStorage.setItem("profileImage", savedImage);
+    }
 
-  navigate("/login");
-};
+    navigate("/login");
+  };
   return (
-    <div>
+    <div className="layout">
       <nav className="navbar">
 
         <h2

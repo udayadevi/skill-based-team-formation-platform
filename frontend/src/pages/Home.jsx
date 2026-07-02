@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import Header from "../components/Header";
 import hero from "../assets/images/hero.png";
 import collab from "../assets/images/collabration.png";
-import logo from "../assets/images/logo.png";
 
 import skillMatching from "../assets/images/SkillMatching.png";
 import smartFiltering from "../assets/images/SmartFiltering.png";
@@ -13,222 +14,135 @@ import "../styles/Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const token =
-    localStorage.getItem("token") ||
-    sessionStorage.getItem("token");
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const el = document.getElementById(location.state.scrollTo);
 
-  const user = JSON.parse(
-    localStorage.getItem("user") ||
-    sessionStorage.getItem("user") ||
-    "{}"
-  );
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-
-    navigate("/login");
-  };
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
 
   return (
-    <div className="home">
+    <>
+      <Header />
+      <div className="home">
 
-      {/* NAVBAR */}
-      <nav className="navbar">
+        {/* HERO SECTION */}
+        <section className="hero">
 
-        {/* LEFT LOGO */}
-        <div className="nav-left">
-          <img src={logo} alt="logo" />
-          <div>
-            <h2>SkillBasedTeam</h2>
-            <p className="tagline">Create • Build • Connect</p>
+          <div className="hero-text">
+            <h1>Build Better Teams Based on Skills</h1>
+
+            <p>
+              SkillBasedTeam helps developers connect, collaborate, and form
+              strong project teams using intelligent skill-based matching.
+            </p>
+
+            <button onClick={() => navigate("/register")}>
+              Get Started
+            </button>
           </div>
-        </div>
 
-        {/* MIDDLE NAV */}
-        <ul className="nav-middle">
-          <li onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-            Home
-          </li>
+          <div className="hero-img">
+            <img src={hero} alt="hero" />
+          </div>
 
-          <li
-            onClick={() =>
-              document
-                .getElementById("about")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            About
-          </li>
+        </section>
 
-          <li
-            onClick={() =>
-              document
-                .getElementById("features")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            Features
-          </li>
+        {/* ABOUT */}
+        <section id="about" className="about">
 
-          <li onClick={() => navigate("/find-team")}>
-            Find Team
-          </li>
-
-          <li onClick={() => navigate("/create-team")}>
-            Create Team
-          </li>
-
-          <li onClick={() => navigate("/projects")}>
-            Projects
-          </li>
-        </ul>
-
-        {/* RIGHT SIDE */}
-        <div className="nav-right">
-          {token ? (
-            <>
-              <div
-                className="profile-icon"
-                onClick={() => navigate("/profile")}
-                title="Profile"
-              >
-                {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
-              </div>
-
-              <button onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => navigate("/login")}>
-                Login
-              </button>
-
-              <button onClick={() => navigate("/register")}>
-                Register
-              </button>
-            </>
-          )}
-        </div>
-
-      </nav>
-
-      {/* HERO SECTION */}
-      <section className="hero">
-
-        <div className="hero-text">
-          <h1>Build Better Teams Based on Skills</h1>
+          <h2>About</h2>
 
           <p>
-            SkillBasedTeam helps developers connect, collaborate, and form
-            strong project teams using intelligent skill-based matching.
+            SkillBasedTeam is a platform designed to connect developers based on
+            skills.
           </p>
 
-          <button onClick={() => navigate("/register")}>
-            Get Started
-          </button>
-        </div>
+          <p>
+            It helps users find the right teammates for their projects easily.
+          </p>
 
-        <div className="hero-img">
-          <img src={hero} alt="hero" />
-        </div>
+          <p>
+            The system improves collaboration by matching similar or complementary
+            skills.
+          </p>
 
-      </section>
+          <p>
+            Users can create teams, join projects, and collaborate in real-time.
+          </p>
 
-      {/* ABOUT */}
-      <section id="about" className="about">
+          <p>
+            Our goal is to make teamwork simple and efficient for developers.
+          </p>
 
-        <h2>About</h2>
+        </section>
 
-        <p>
-          SkillBasedTeam is a platform designed to connect developers based on
-          skills.
-        </p>
+        {/* FEATURES */}
+        <section id="features" className="features">
 
-        <p>
-          It helps users find the right teammates for their projects easily.
-        </p>
+          <h2>Features</h2>
 
-        <p>
-          The system improves collaboration by matching similar or complementary
-          skills.
-        </p>
+          <div className="feature-box">
 
-        <p>
-          Users can create teams, join projects, and collaborate in real-time.
-        </p>
-
-        <p>
-          Our goal is to make teamwork simple and efficient for developers.
-        </p>
-
-      </section>
-
-      {/* FEATURES */}
-      <section id="features" className="features">
-
-        <h2>Features</h2>
-
-        <div className="feature-box">
-
-          <div className="card">
-            <img src={skillMatching} alt="Skill Matching" />
-            <div>
-              <h3>Skill Matching</h3>
-              <p>
-                Our smart algorithm matches you with people who have
-                complementary skills.
-              </p>
+            <div className="card">
+              <img src={skillMatching} alt="Skill Matching" />
+              <div>
+                <h3>Skill Matching</h3>
+                <p>
+                  Our smart algorithm matches you with people who have
+                  complementary skills.
+                </p>
+              </div>
             </div>
+
+            <div className="card">
+              <img src={smartFiltering} alt="Smart Filtering" />
+              <div>
+                <h3>Smart Filtering</h3>
+                <p>
+                  Find users based on technologies like React, Python and
+                  JavaScript.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <img src={collab} alt="Team Collaboration" />
+              <div>
+                <h3>Team Collaboration</h3>
+                <p>
+                  Get collaborated with teams based on your skills, interests and
+                  project goals.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <img src={teamFormation} alt="Team Formation" />
+              <div>
+                <h3>Team Formation</h3>
+                <p>
+                  Create and join teams based on project requirements.
+                </p>
+              </div>
+            </div>
+
           </div>
 
-          <div className="card">
-            <img src={smartFiltering} alt="Smart Filtering" />
-            <div>
-              <h3>Smart Filtering</h3>
-              <p>
-                Find users based on technologies like React, Python and
-                JavaScript.
-              </p>
-            </div>
-          </div>
+        </section>
 
-          <div className="card">
-            <img src={collab} alt="Team Collaboration" />
-            <div>
-              <h3>Team Collaboration</h3>
-              <p>
-                Get collaborated with teams based on your skills, interests and
-                project goals.
-              </p>
-            </div>
-          </div>
+        {/* FOOTER */}
+        <footer>
+          <p>© 2026 SkillBasedTeam | All Rights Reserved 💻</p>
+        </footer>
 
-          <div className="card">
-            <img src={teamFormation} alt="Team Formation" />
-            <div>
-              <h3>Team Formation</h3>
-              <p>
-                Create and join teams based on project requirements.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* FOOTER */}
-      <footer>
-        <p>© 2026 SkillBasedTeam | All Rights Reserved 💻</p>
-      </footer>
-
-    </div>
+      </div>
+    </>
   );
 };
 

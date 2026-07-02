@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const DEFAULT_PROFILE_IMAGE =
+    "https://res.cloudinary.com/demo/image/upload/vdefault/default-avatar.png";
 
 // Get My Profile
 const getMe = async (req, res) => {
@@ -69,7 +71,11 @@ const updateProfile = async (req, res) => {
             github,
             linkedin,
             portfolio,
-            bio
+            bio,
+            lookingFor,
+            availability,
+            experience,
+            profileImage
         } = req.body;
         if (firstName !== undefined && firstName.trim() === "") {
             return res.status(400).json({
@@ -95,6 +101,14 @@ const updateProfile = async (req, res) => {
                 linkedin: linkedin || existingUser.linkedin,
                 portfolio: portfolio || existingUser.portfolio,
                 bio: bio || existingUser.bio,
+
+                lookingFor: lookingFor ?? existingUser.lookingFor,
+                availability: availability ?? existingUser.availability,
+                experience: experience ?? existingUser.experience,
+                profileImage:
+                    profileImage === "" || profileImage === null
+                        ? null
+                        : profileImage || existingUser.profileImage,
                 skills: typeof skills === "string"
                     ? skills.split(",").map(s => s.trim())
                     : skills || existingUser.skills
@@ -102,9 +116,15 @@ const updateProfile = async (req, res) => {
             { new: true }
         ).select("-password");
 
+        const safeUser = {
+            ...updatedUser._doc,
+            profileImage:
+                updatedUser.profileImage || DEFAULT_PROFILE_IMAGE
+        };
+
         res.status(200).json({
             success: true,
-            user: updatedUser
+            user: safeUser
         });
 
     } catch (error) {

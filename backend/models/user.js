@@ -46,6 +46,21 @@ const userSchema = new mongoose.Schema(
       required: true
     },
 
+    lookingFor: {
+      type: String,
+      default: ""
+    },
+
+    availability: {
+      type: String,
+      default: "Available for New Projects"
+    },
+
+    profileImage: {
+      type: String,
+      default: ""
+    },
+
     gender: {
       type: String,
       enum: ["Male", "Female"],

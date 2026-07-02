@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "./components/Header";
 import ForgotPassword from "./pages/ForgotPassword";
 
 import Home from "./pages/Home";
@@ -19,6 +20,7 @@ import Projects from "./pages/Projects";
 function App() {
   return (
     <>
+      <ToastContainer />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />

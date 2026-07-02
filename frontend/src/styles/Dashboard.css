@@ -139,46 +139,6 @@
   line-height: 1.6;
 }
 
-/* ================= OPTIONAL NAVBAR SUPPORT ================= */
-
-.navbar {
-  background: #111827;
-  border-bottom: 1px solid #334155;
-  padding: 18px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navbar h2 {
-  color: #38bdf8;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.nav-right span {
-  color: #ffffff;
-  font-weight: 500;
-}
-
-.nav-right button {
-  background: #38bdf8;
-  color: #000;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.nav-right button:hover {
-  background: #0ea5e9;
-}
 
 /* ================= RESPONSIVE ================= */
 
@@ -198,16 +158,6 @@
     grid-template-columns: 1fr;
   }
 
-  .navbar {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-
-  .nav-right {
-    flex-direction: column;
-  }
-
   .dashboard-header {
     padding: 20px;
   }
@@ -215,53 +165,4 @@
   .dashboard-header h1 {
     font-size: 1.6rem;
   }
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* 👤 Profile circle like LeetCode/GitHub */
-.profile-icon {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  min-height: 38px;
-
-  border-radius: 50%;
-
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 700;
-  font-size: 14px;
-
-  cursor: pointer;
-  flex-shrink: 0;
-
-  transition: 0.2s ease;
-  line-height: 1;
-}
-
-/* hover effect */
-.profile-icon:hover {
-  transform: scale(1.1);
-  background: #3730a3;
-}
-.username {
-  font-weight: 500;
-}
-
-.action-card {
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.action-card:hover {
-  transform: translateY(-5px);
 }

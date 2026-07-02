@@ -7,6 +7,7 @@ function VerifyOtp() {
     const [otp, setOtp] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
+    const [loading, setLoading] = useState(false);
 
     const email =
         location.state?.email ||
@@ -14,8 +15,22 @@ function VerifyOtp() {
 
     const handleVerify = async (e) => {
         e.preventDefault();
+        if (loading) return;
+
+        if (!email) {
+            toast.error("Please request a new OTP.");
+            navigate("/forgot-password");
+            return;
+        }
+
+        if (otp.trim().length !== 6) {
+            toast.error("Please enter a valid 6-digit OTP");
+            return;
+        }
 
         try {
+            setLoading(true);
+
             const res = await api.post("/auth/verify-otp", {
                 email,
                 otp: otp.trim(),
@@ -27,6 +42,8 @@ function VerifyOtp() {
 
         } catch (err) {
             toast.error(err.response?.data?.message || "Invalid OTP");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -40,10 +57,18 @@ function VerifyOtp() {
                         type="text"
                         placeholder="Enter OTP"
                         value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
+                        maxLength={6}
+                        autoComplete="one-time-code"
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                        required
                     />
 
-                    <button type="submit">Verify</button>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading ? "Verifying..." : "Verify"}
+                    </button>
                 </form>
             </div>
         </div>

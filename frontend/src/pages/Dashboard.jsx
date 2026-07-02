@@ -1,85 +1,100 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
 import "../styles/Dashboard.css";
 import API from "../services/api";
+import Header from "../components/Header";
+import AuthPrompt from "../components/AuthPrompt";
 
 function Dashboard() {
   const navigate = useNavigate();
 
-const [user, setUser] = useState({});
-const [activities, setActivities] = useState([]);
+  const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
 
-const [teamCount, setTeamCount] = useState(0);
-const [projectCount, setProjectCount] = useState(0);
+  if (!token) {
+    return (
+      <>
+        <Header />
+        <AuthPrompt />
+      </>
+    );
+  }
 
-useEffect(() => {
-  const fetchAll = async () => {
-    try {
-      const userRes = await API.get("/users/me");
-      const userData = userRes.data?.user || userRes.data || {};
-      setUser(userData);
+  const [user, setUser] = useState({});
+  const [activities, setActivities] = useState([]);
 
-      const teamRes = await API.get("/teams");
-      const teams = teamRes.data?.data || [];
+  const [teamCount, setTeamCount] = useState(0);
+  const [projectCount, setProjectCount] = useState(0);
 
-      const createdTeams = teams.filter(
-        (t) => t.createdBy?._id === userData._id
-      );
-
-      const joinedTeams = teams.filter(
-        (t) =>
-          t.members?.some(
-            (m) => (typeof m === "string" ? m : m._id) === userData._id
-          ) && t.createdBy?._id !== userData._id
-      );
-
-      setTeamCount(createdTeams.length + joinedTeams.length);
-
-      // projects safe fetch
-      let projectCountValue = 0;
+  useEffect(() => {
+    const fetchAll = async () => {
       try {
-        const projectRes = await API.get("/projects");
-        projectCountValue = projectRes.data?.length || 0;
+        const userRes = await API.get("/users/me");
+        const userData = userRes.data?.user || userRes.data || {};
+        setUser(userData);
+
+        const teamRes = await API.get("/teams");
+        const teams = teamRes.data?.data || [];
+
+        const createdTeams = teams.filter(
+          (t) => t.createdBy?._id === userData._id
+        );
+
+        const joinedTeams = teams.filter(
+          (t) =>
+            t.members?.some(
+              (m) => (typeof m === "string" ? m : m._id) === userData._id
+            ) && t.createdBy?._id !== userData._id
+        );
+
+        setTeamCount(createdTeams.length + joinedTeams.length);
+
+        // projects safe fetch
+        let projectCountValue = 0;
+        try {
+          const projectRes = await API.get("/projects");
+          projectCountValue = projectRes.data?.length || 0;
+        } catch (err) {
+          projectCountValue = 0;
+        }
+
+        setProjectCount(projectCountValue);
+
+        // activity
+        const recent = [];
+
+        createdTeams.forEach((t) => {
+          recent.push({
+            id: t._id,
+            text: `Created Team: ${t.name}`,
+            time: new Date(t.createdAt || Date.now()).toLocaleString(),
+          });
+        });
+
+        joinedTeams.forEach((t) => {
+          recent.push({
+            id: t._id + "-join",
+            text: `Joined Team: ${t.name}`,
+            time: new Date(t.updatedAt || Date.now()).toLocaleString(),
+          });
+        });
+
+        setActivities(recent.reverse());
       } catch (err) {
-        projectCountValue = 0;
+        console.log(err);
       }
+    };
 
-      setProjectCount(projectCountValue);
-
-      // activity
-      const recent = [];
-
-      createdTeams.forEach((t) => {
-        recent.push({
-          id: t._id,
-          text: `Created Team: ${t.name}`,
-          time: new Date(t.createdAt || Date.now()).toLocaleString(),
-        });
-      });
-
-      joinedTeams.forEach((t) => {
-        recent.push({
-          id: t._id + "-join",
-          text: `Joined Team: ${t.name}`,
-          time: new Date(t.updatedAt || Date.now()).toLocaleString(),
-        });
-      });
-
-      setActivities(recent.reverse());
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  fetchAll();
-}, []);
+    fetchAll();
+  }, []);
   const skillCount = Array.isArray(user?.skills)
     ? user.skills.length
     : 0;
 
   return (
-    <Layout>
+    <>
+      <Header />
       <div className="dashboard-container">
 
         {/* HEADER */}
@@ -155,7 +170,7 @@ useEffect(() => {
         </div>
 
       </div>
-    </Layout>
+    </>
   );
 }
 

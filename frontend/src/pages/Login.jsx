@@ -30,8 +30,6 @@ export default function Login() {
 
       const res = await loginUser(form);
 
-      console.log("LOGIN RESPONSE:", res);
-
       // ✅ FIXED: res already contains data
       const token = res.token || res.data?.token;
       const user = res.user || res.data?.user;
@@ -49,15 +47,12 @@ export default function Login() {
         sessionStorage.setItem("user", JSON.stringify(user));
       }
 
-      console.log("Local Token:", localStorage.getItem("token"));
-      console.log("Session Token:", sessionStorage.getItem("token"));
 
       toast.success("Login Successful 🚀");
 
       navigate("/dashboard");
 
     } catch (error) {
-      console.error(error);
       toast.error(error?.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -77,7 +72,9 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
 
             <input
+              type="email"
               name="email"
+              autoComplete="email"
               placeholder="Email"
               onChange={handleChange}
               required
@@ -87,6 +84,7 @@ export default function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
+                autoComplete="current-password"
                 placeholder="Password"
                 onChange={handleChange}
                 required
@@ -117,7 +115,10 @@ export default function Login() {
               </Link>
             </div>
 
-            <button disabled={loading}>
+            <button
+              type="submit"
+              disabled={loading}
+            >
               {loading ? "Logging in..." : "Login"}
             </button>
 

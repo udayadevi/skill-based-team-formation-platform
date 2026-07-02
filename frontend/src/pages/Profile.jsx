@@ -4,6 +4,7 @@ import api from "../services/api";
 import "../styles/Profile.css";
 import { useNavigate } from "react-router-dom";
 import AuthPrompt from "../components/AuthPrompt";
+import { toast } from "react-toastify";
 
 import {
   FaGithub,
@@ -21,6 +22,7 @@ function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
+  const [imageMenuOpen, setImageMenuOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,7 +33,7 @@ function Profile() {
     linkedin: "",
     portfolio: "",
     skills: "",
-    preferredRole: "",
+    lookingFor: "",
     availability: "",
     experience: ""
   });
@@ -43,6 +45,22 @@ function Profile() {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    const closeMenu = (e) => {
+      if (!e.target.closest(".profile-img-wrapper")) {
+        setImageMenuOpen(false);
+      }
+    };
+
+    if (imageMenuOpen) {
+      document.addEventListener("click", closeMenu);
+    }
+
+    return () => {
+      document.removeEventListener("click", closeMenu);
+    };
+  }, [imageMenuOpen]);
 
   const [teamsJoined, setTeamsJoined] = useState(0);
   const [teamsCreated, setTeamsCreated] = useState(0);
@@ -76,7 +94,7 @@ function Profile() {
         linkedin: data.linkedin || "",
         portfolio: data.portfolio || "",
         skills: data.skills?.join(", ") || "",
-        preferredRole: data.preferredRole || "",
+        lookingFor: data.lookingFor || "",
         availability: data.availability || "Available for New Projects",
         experience: data.experience || "",
       });
@@ -139,42 +157,46 @@ function Profile() {
     try {
       await api.put("/users/update-profile", {
         ...formData,
-        profileImage: profileImage || localStorage.getItem("profileImage"),
+        profileImage: profileImage?.trim() === "" ? null : profileImage,
         skills: formData.skills
-          .split(",")
-          .map((skill) => skill.trim())
+          ? formData.skills.split(",").map(s => s.trim()).filter(Boolean)
+          : []
       });
 
-      alert("Profile Updated Successfully");
+      toast.success("Profile Updated Successfully");
 
-      setEditMode(false);
+      setTimeout(() => {
+        setEditMode(false);
+      }, 300);
 
       fetchProfile();
     }
     catch (err) {
       console.error(err);
-      alert("Unable to Update");
+      toast.error("Unable to Update");
     }
   };
 
   if (loading) {
-  const token =
-    localStorage.getItem("token") ||
-    sessionStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") ||
+      sessionStorage.getItem("token");
 
-  if (!token) {
-    return <AuthPrompt />;
+    if (!token) {
+      return <AuthPrompt />;
+    }
+
+    const hasImage = profileImage || user?.profileImage;
+
+    return (
+      <>
+        <Header />
+        <div className="profile-loading">
+          Loading...
+        </div>
+      </>
+    );
   }
-
-  return (
-    <>
-      <Header />
-      <div className="profile-loading">
-        Loading...
-      </div>
-    </>
-  );
-}
 
   if (!user) {
     return (
@@ -229,9 +251,15 @@ function Profile() {
     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
 
   const avatar =
-    profileImage ||
-    localStorage.getItem("profileImage") ||
-    (user.gender === "Female" ? FEMALE : MALE);
+    profileImage && profileImage !== ""
+      ? profileImage
+      : user.profileImage && user.profileImage !== ""
+        ? user.profileImage
+        : user.gender === "Female"
+          ? FEMALE
+          : MALE;
+
+  const hasImage = profileImage && profileImage !== "";
 
   return (
     <>
@@ -246,23 +274,49 @@ function Profile() {
           <div className="profile-card">
             <div className="profile-img-wrapper">
 
-              <img
-                src={avatar}
-                alt="profile"
-                className="profile-image"
-              />
+              <img src={avatar} alt="profile" className="profile-image" />
 
-              {/* EDIT ICON BUTTON */}
-              <label className="edit-image-icon" title="Change Profile Picture">
+              <div
+                className="edit-image-icon"
+                onClick={() => setImageMenuOpen(!imageMenuOpen)}
+              >
                 <FaUserEdit />
+              </div>
 
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  hidden
-                />
-              </label>
+              {imageMenuOpen && (
+                <div className="image-menu">
+
+                  <label className="menu-item">
+                    Change Image
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      onChange={handleImageChange}
+                    />
+                  </label>
+
+                  {profileImage && (
+                    <button
+                      className="menu-item danger"
+                      onClick={async () => {
+                        setProfileImage("");
+                        localStorage.removeItem("profileImage");
+
+                        await api.put("/users/update-profile", {
+                          profileImage: null
+                        });
+
+                        setImageMenuOpen(false);
+                        fetchProfile();
+                      }}
+                    >
+                      Remove Image
+                    </button>
+                  )}
+
+                </div>
+              )}
 
             </div>
 
@@ -281,18 +335,12 @@ function Profile() {
 
             <button
               className="edit-profile-btn"
-              onClick={() =>
-                setEditMode(!editMode)
-              }
+              onClick={() => setEditMode(!editMode)}
             >
               <FaUserEdit />
-              {editMode
-                ? "Cancel"
-                : "Edit Profile"}
+              {editMode ? "Cancel" : "Edit Profile"}
             </button>
-
           </div>
-
           {/* ABOUT CARD */}
 
           <div className="about-card">
@@ -306,11 +354,10 @@ function Profile() {
               {!editMode && (
                 <button
                   className="edit-link"
-                  onClick={() =>
-                    setEditMode(true)
-                  }
+                  onClick={() => setEditMode(true)}
                 >
-                  Edit ✏️
+                  <FaUserEdit />
+                  Edit
                 </button>
               )}
 
@@ -347,11 +394,11 @@ function Profile() {
 
                   <div className="info-box">
                     <span>
-                      Preferred Role
+                      Looking For
                     </span>
 
                     <h4>
-                      {user.preferredRole ||
+                      {user.lookingFor ||
                         "-"}
                     </h4>
                   </div>
@@ -490,9 +537,9 @@ function Profile() {
 
                   <input
                     type="text"
-                    name="preferredRole"
-                    placeholder="Preferred Role"
-                    value={formData.preferredRole}
+                    name="lookingFor"
+                    placeholder="Looking for"
+                    value={formData.lookingFor}
                     onChange={handleChange}
                   />
 

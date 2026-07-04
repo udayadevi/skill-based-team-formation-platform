@@ -13,6 +13,8 @@
 
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
   align-items: center;
 
   padding: 0 28px;
@@ -33,6 +35,8 @@
 .nav-center {
   display: flex;
   gap: 14px;
+  flex: 1;
+  justify-content: center;
 }
 
 .nav-link-btn {
@@ -43,6 +47,8 @@
 
   padding: 10px 22px;
   border-radius: 12px;
+
+   white-space: nowrap;
 
   font-weight: 600;
   font-size: 15px;
@@ -74,6 +80,7 @@
   border-radius: 50%;
 
   background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   color: #0f172a;
 
   display: flex;
@@ -92,6 +99,7 @@
 
 .profile-icon:hover {
   transform: scale(1.08);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
 /* LOGOUT */
@@ -116,8 +124,18 @@
   background: #0ea5e9;
 }
 
+.nav-right button:last-child {
+  background: #ef4444;
+  color: white;
+}
+
+.nav-right button:last-child:hover {
+  background: #dc2626;
+}
+
 /* MAIN */
 main {
   flex: 1;
   padding: 20px;
+  padding-top: 90px;
 }

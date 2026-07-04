@@ -400,29 +400,34 @@
 /* EDIT BUTTON */
 
 .edit-link {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    gap: 8px;
 
-    padding: 10px 18px;
+    padding: 4px 10px;
+    height: 40px;
+    width: auto !important;
+    min-width: auto;
 
-    background: #38bdf8;
-    color: #0f172a;
+    flex: 0 0 auto;
 
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
+
+    background: #2563eb;
+    color: #fff;
 
     font-size: 14px;
     font-weight: 600;
 
     cursor: pointer;
-    transition: .3s;
+    white-space: nowrap;
+
+    transition: 0.3s;
 }
 
 .edit-link:hover {
-    background: #0ea5e9;
-    transform: translateY(-1px);
+    background: #1d4ed8;
 }
 
 /* BIO */

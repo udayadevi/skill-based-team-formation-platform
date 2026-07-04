@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CreateTeam.css";
 import api from "../services/api";
@@ -98,14 +98,35 @@ const CreateTeam = () => {
         <h1>🚀 Create Your Team</h1>
 
         <form className="team-form" onSubmit={handleSubmit}>
-          <label>Team Name</label>
-          <input name="name" value={form.name} onChange={handleChange} />
+          <label>
+            Team Name <span className="required">*</span>
+          </label>
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
 
-          <label>Project Name</label>
-          <input name="projectName" value={form.projectName} onChange={handleChange} />
+          <label>
+            Project Name <span className="required">*</span>
+          </label>
+          <input
+            name="projectName"
+            value={form.projectName}
+            onChange={handleChange}
+            required
+          />
 
-          <label>Project Description</label>
-          <textarea name="description" value={form.description} onChange={handleChange} />
+          <label>
+            Project Description <span className="required">*</span>
+          </label>
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            required
+          />
 
           <label>Required Skills</label>
           <input
@@ -115,13 +136,18 @@ const CreateTeam = () => {
             placeholder="React, Node, MongoDB"
           />
 
-          <label>Maximum Members</label>
+          <label>
+            Maximum Members <span className="required">*</span>
+          </label>
           <input
             type="number"
             name="maxMembers"
             value={form.maxMembers}
             onChange={handleChange}
+            min="2"
+            required
           />
+
 
           <label>Project Category</label>
           <select name="category" value={form.category} onChange={handleChange}>
@@ -135,8 +161,17 @@ const CreateTeam = () => {
             <option>Other</option>
           </select>
 
-          <label>Project Deadline</label>
-          <input type="date" name="deadline" value={form.deadline} onChange={handleChange} />
+          <label>
+            Project Deadline <span className="required">*</span>
+          </label>
+          <input
+            type="date"
+            name="deadline"
+            value={form.deadline}
+            onChange={handleChange}
+            min={new Date().toISOString().split("T")[0]}
+            required
+          />
 
           <label>Mode</label>
           <select name="mode" value={form.mode} onChange={handleChange}>

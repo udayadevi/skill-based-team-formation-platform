@@ -3,53 +3,106 @@ import "../styles/FindTeam.css";
 import Header from "../components/Header";
 import api from "../services/api";
 import AuthPrompt from "../components/AuthPrompt";
+import TeamDetailsModal from "../components/TeamDetailsModal";
+import { toast } from "react-toastify";
 
 const defaultTeams = [
   {
     id: 1,
     title: "React Developer Team",
-    project: "Skill Based Team Formation",
+    project: "Skill Based Team Formation Platform",
     leader: "Lalitha Yelisetti",
-    members: "3 / 5",
+    leaderEmail: "lalitha@example.com",
+
+    category: "Web Development",
+    mode: "Online",
+    experienceLevel: "Intermediate",
+    meetingPlatform: "Google Meet",
+
+    createdAt: "2026-06-15",
+    deadline: "2026-07-30",
+
+    membersCount: 3,
+    maxMembers: 5,
     description:
-      "Building a MERN Stack application for intelligent team formation.",
-    skills: ["React", "Node.js", "MongoDB"],
+      "We are building a MERN stack-based intelligent team formation platform that matches users based on skills, experience, and availability.",
+
+    skills: ["React", "Node.js", "MongoDB", "Express", "JWT"]
   },
+
   {
     id: 2,
     title: "AI Resume Analyzer",
-    project: "Resume Analyzer",
+    project: "Smart Resume Screening System",
     leader: "Rohit Kumar",
-    members: "2 / 4",
+    leaderEmail: "rohit.kumar@example.com",
+
+    category: "Artificial Intelligence",
+    mode: "Online",
+    experienceLevel: "Advanced",
+    meetingPlatform: "Zoom",
+
+    createdAt: "2026-06-10",
+    deadline: "2026-08-01",
+
+    membersCount: 2,
+    maxMembers: 4,
     description:
-      "AI project that analyzes resumes using Machine Learning.",
-    skills: ["Python", "Flask", "Machine Learning"],
+      "An AI-powered system that analyzes resumes and matches candidates with job descriptions using NLP and ML models.",
+
+    skills: ["Python", "Flask", "Machine Learning", "NLP", "Scikit-learn"]
   },
+
   {
     id: 3,
     title: "E-Commerce Website",
-    project: "Online Shopping",
+    project: "Full Stack Online Shopping Platform",
     leader: "Rahul Verma",
-    members: "4 / 6",
+    leaderEmail: "rahul.verma@example.com",
+
+    category: "Web Development",
+    mode: "Hybrid",
+    experienceLevel: "Intermediate",
+    meetingPlatform: "Google Meet",
+
+    createdAt: "2026-05-20",
+    deadline: "2026-07-25",
+    membersCount: 4,
+    maxMembers: 6,
     description:
-      "Full stack ecommerce website with authentication and payments.",
-    skills: ["React", "Express", "MongoDB"],
+      "A full-stack ecommerce platform with product listings, cart system, authentication, and payment integration.",
+
+    skills: ["React", "Node.js", "Express", "MongoDB", "Stripe"]
   },
+
   {
     id: 4,
     title: "Secure Chat App",
-    project: "Cyber Security",
+    project: "Encrypted Messaging System",
     leader: "Anjali Patel",
-    members: "3 / 5",
+    leaderEmail: "anjali.patel@example.com",
+
+    category: "Cyber Security",
+    mode: "Online",
+    experienceLevel: "Advanced",
+    meetingPlatform: "Discord",
+
+    createdAt: "2026-06-01",
+    deadline: "2026-07-20",
+
+    membersCount: 3,
+    maxMembers: 5,
     description:
-      "End-to-end encrypted chat application using Socket.io.",
-    skills: ["React", "Node.js", "Socket.io"],
-  },
+      "A real-time chat application with end-to-end encryption using Socket.io and secure authentication.",
+
+    skills: ["React", "Node.js", "Socket.io", "Encryption", "JWT"]
+  }
 ];
 
 const FindTeam = () => {
   const [search, setSearch] = useState("");
   const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   const fetchTeams = async () => {
     try {
@@ -88,56 +141,31 @@ const FindTeam = () => {
   const joinTeam = async (team) => {
     try {
       if (team.isDefault) {
-        alert("This is a demo team. You cannot join it.");
+        toast.info("This is a demo team.");
         return;
       }
 
       const res = await api.put(`/teams/join/${team._id}`);
-      alert(res.data.message);
 
-      fetchTeams(); // refresh from backend
+      toast.success(res.data.message);
+
+      setSelectedTeam(null);
+
+      fetchTeams();
+
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to join team");
+
+      toast.error(
+        err.response?.data?.message ||
+        "Failed to join team"
+      );
+
     }
   };
 
-  const viewDetails = (team) => {
-    const leader = team.isDefault
-      ? team.leader
-      : team.createdBy
-        ? `${team.createdBy.firstName} ${team.createdBy.lastName}`
-        : "Unknown";
-
-    const members = team.isDefault
-      ? team.members
-      : `${team.members.length} / ${team.maxMembers}`;
-
-    const skills = team.isDefault
-      ? team.skills || []
-      : team.skillsRequired || [];
-
-    const project = team.isDefault ? team.project : team.projectName;
-
-    alert(
-      `Project : ${project}
-
-Leader : ${leader}
-
-Members : ${members}
-
-Description :
-
-${team.description}
-
-Skills :
-
-${skills.join(", ")}`
-    );
-  };
-
- const token =
-  localStorage.getItem("token") ||
-  sessionStorage.getItem("token");
+  const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
 
   if (!token) {
     return <AuthPrompt />;
@@ -156,7 +184,10 @@ ${skills.join(", ")}`
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button>Search</button>
+
+          <button onClick={() => setSearch(search)}>
+            Search
+          </button>
         </div>
 
         <div className="teamGrid">
@@ -189,8 +220,8 @@ ${skills.join(", ")}`
                 <p>
                   <strong>👥 Members:</strong>{" "}
                   {team.isDefault
-                    ? team.members
-                    : `${team.members.length} / ${team.maxMembers}`}
+                    ? `${team.membersCount} / ${team.maxMembers}`
+                    : `${team.members?.length || 0} / ${team.maxMembers}`}
                 </p>
 
                 <p className="description">
@@ -206,7 +237,7 @@ ${skills.join(", ")}`
                 <div className="buttons">
                   <button
                     className="detailsBtn"
-                    onClick={() => viewDetails(team)}
+                    onClick={() => setSelectedTeam(team)}
                   >
                     View Details
                   </button>
@@ -215,8 +246,10 @@ ${skills.join(", ")}`
                     className="joinBtn"
                     onClick={() => joinTeam(team)}
                     disabled={
-                      team.isDefault ||
-                      (team.members?.length || 0) >= (team.maxMembers || 0)}
+                      team.isDefault
+                        ? false
+                        : (team.members?.length || 0) >= (team.maxMembers || 0)
+                    }
                   >
                     {team.isDefault
                       ? "Demo Team"
@@ -230,6 +263,15 @@ ${skills.join(", ")}`
           })}
         </div>
       </div>
+      {selectedTeam && (
+
+        <TeamDetailsModal
+          team={selectedTeam}
+          onClose={() => setSelectedTeam(null)}
+          onJoin={() => joinTeam(selectedTeam)}
+        />
+
+      )}
     </>
   );
 };

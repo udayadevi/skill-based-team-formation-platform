@@ -325,7 +325,7 @@ function Profile() {
             </h2>
 
             <p className="profile-role">
-              {user.role || "Full Stack Developer"}
+              {user.role}
             </p>
 
             <p className="profile-email">

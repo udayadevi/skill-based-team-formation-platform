@@ -38,6 +38,26 @@ const teamSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    
+    category: {
+      type: String,
+      default: "Web Development"
+    },
+
+    mode: {
+      type: String,
+      default: "Online"
+    },
+
+    experienceLevel: {
+      type: String,
+      default: "Beginner"
+    },
+
+    meetingPlatform: {
+      type: String,
+      default: ""
+    },
 
     deadline: {
       type: Date,

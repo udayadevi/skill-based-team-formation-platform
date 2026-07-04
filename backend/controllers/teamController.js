@@ -9,7 +9,18 @@ const createTeam = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    const { name, projectName, description = "", skillsRequired = [], maxMembers, deadline } = req.body;
+    const {
+      name,
+      projectName,
+      description = "",
+      skillsRequired = [],
+      maxMembers,
+      category,
+      mode,
+      experienceLevel,
+      meetingPlatform,
+      deadline
+    } = req.body;
 
     if (!name?.trim()) {
       return res.status(400).json({ success: false, message: "Team name required" });
@@ -43,7 +54,13 @@ const createTeam = async (req, res) => {
       });
     }
 
-    if (new Date(deadline) < new Date()) {
+    const selectedDate = new Date(deadline);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
       return res.status(400).json({
         success: false,
         message: "Deadline cannot be in the past"
@@ -58,6 +75,10 @@ const createTeam = async (req, res) => {
         ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
         : [],
       maxMembers,
+      category,
+      mode,
+      experienceLevel,
+      meetingPlatform,
       deadline,
       createdBy: req.user._id,
       members: [req.user._id]
@@ -191,7 +212,17 @@ const updateTeam = async (req, res) => {
       });
     }
 
-    const { name, projectName, description, skillsRequired, maxMembers } = req.body || {};
+    const {
+      name,
+      projectName,
+      description,
+      skillsRequired,
+      maxMembers,
+      category,
+      mode,
+      experienceLevel,
+      meetingPlatform
+    } = req.body || {};
 
     if (maxMembers !== undefined) {
       if (maxMembers < 2 || maxMembers > 20) {
@@ -218,7 +249,11 @@ const updateTeam = async (req, res) => {
         skillsRequired: Array.isArray(skillsRequired)
           ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
           : team.skillsRequired,
-        maxMembers: maxMembers ?? team.maxMembers
+        maxMembers: maxMembers ?? team.maxMembers,
+        category: category ?? team.category,
+        mode: mode ?? team.mode,
+        experienceLevel: experienceLevel ?? team.experienceLevel,
+        meetingPlatform: meetingPlatform ?? team.meetingPlatform,
       },
       { new: true }
     );

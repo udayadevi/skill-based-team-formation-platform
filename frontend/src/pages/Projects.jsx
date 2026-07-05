@@ -19,6 +19,10 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
 
+  const [loading, setLoading] = useState(true);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const token =
     localStorage.getItem("token") || sessionStorage.getItem("token");
 
@@ -30,11 +34,26 @@ const Projects = () => {
         setProjects(res.data.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setShowModal(false);
+    };
+
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = showModal ? "hidden" : "auto";
+  }, [showModal]);
 
   /* ================= FILTER ================= */
   const filteredProjects = projects.filter((project) => {
@@ -59,6 +78,7 @@ const Projects = () => {
   if (!token) return <AuthPrompt />;
 
   return (
+
     <>
       <Header />
 
@@ -124,11 +144,10 @@ const Projects = () => {
                   <div className="buttons">
                     <button
                       className="view-btn"
-                      onClick={() =>
-                        alert(
-                          `Project: ${project.projectName}\n\nDescription:\n${project.description}`
-                        )
-                      }
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setShowModal(true);
+                      }}
                     >
                       View
                     </button>
@@ -150,6 +169,30 @@ const Projects = () => {
           )}
         </div>
       </div>
+      {showModal && selectedProject && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            <h2>{selectedProject.projectName}</h2>
+            <p><strong>Category:</strong> {selectedProject.category}</p>
+
+            <p style={{ marginTop: "10px" }}>
+              {selectedProject.description}
+            </p>
+
+            <div style={{ marginTop: "10px" }}>
+              <strong>Skills:</strong>{" "}
+              {(selectedProject.requiredSkills || []).join(", ")}
+            </div>
+
+            <button
+              className="close-btn"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

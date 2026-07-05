@@ -6,10 +6,12 @@ const {
   getProjects,
 } = require("../controllers/projectcontroller");
 
-// Create Project
-router.post("/", createProject);
+const protect = require("../middleware/authMiddleware");
 
-// Get All Projects
-router.get("/", getProjects);
+// CREATE PROJECT (LOGIN REQUIRED)
+router.post("/", protect, createProject);
+
+// GET PROJECTS (OPTIONAL: keep protected or open)
+router.get("/", protect, getProjects);
 
 module.exports = router;

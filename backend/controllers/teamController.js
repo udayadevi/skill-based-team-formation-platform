@@ -1,6 +1,7 @@
 const Team = require("../models/Team");
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const Project = require("../models/project");
 
 /* ================= CREATE TEAM ================= */
 const createTeam = async (req, res) => {
@@ -11,7 +12,7 @@ const createTeam = async (req, res) => {
 
     const {
       name,
-      projectName,
+      project,
       description = "",
       skillsRequired = [],
       maxMembers,
@@ -26,10 +27,19 @@ const createTeam = async (req, res) => {
       return res.status(400).json({ success: false, message: "Team name required" });
     }
 
-    if (!projectName?.trim()) {
+    if (!project) {
       return res.status(400).json({
         success: false,
-        message: "Project name required"
+        message: "Project is required",
+      });
+    }
+
+    const existingProject = await Project.findById(project);
+
+    if (!existingProject) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
       });
     }
 
@@ -69,8 +79,8 @@ const createTeam = async (req, res) => {
 
     const team = await Team.create({
       name: name.trim(),
-      projectName: projectName.trim(),
-      description,
+      project,
+      description: description.trim(),
       skillsRequired: Array.isArray(skillsRequired)
         ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
         : [],
@@ -105,6 +115,7 @@ const createTeam = async (req, res) => {
 const getAllTeams = async (req, res) => {
   try {
     const teams = await Team.find()
+      .sort({ createdAt: -1 })
       .populate(
         "createdBy",
         "firstName lastName email"
@@ -112,6 +123,10 @@ const getAllTeams = async (req, res) => {
       .populate(
         "members",
         "firstName lastName email"
+      )
+      .populate(
+        "project",
+        "projectName category status"
       )
 
     return res.status(200).json({ success: true, data: teams });
@@ -138,6 +153,9 @@ const getTeamById = async (req, res) => {
       .populate(
         "members",
         "firstName lastName email"
+      )
+      .populate("project",
+        "projectName category description requiredSkills"
       )
     if (!team) {
       return res.status(404).json({ success: false, message: "Team not found" });
@@ -214,15 +232,42 @@ const updateTeam = async (req, res) => {
 
     const {
       name,
-      projectName,
+      project,
       description,
       skillsRequired,
       maxMembers,
       category,
       mode,
       experienceLevel,
-      meetingPlatform
+      meetingPlatform,
+      deadline
     } = req.body || {};
+
+
+    if (name !== undefined && !name.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Team name cannot be empty",
+      });
+    }
+
+    if (description !== undefined && !description.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Description cannot be empty",
+      });
+    }
+
+    if (project) {
+      const existingProject = await Project.findById(project);
+
+      if (!existingProject) {
+        return res.status(404).json({
+          success: false,
+          message: "Project not found",
+        });
+      }
+    }
 
     if (maxMembers !== undefined) {
       if (maxMembers < 2 || maxMembers > 20) {
@@ -240,11 +285,26 @@ const updateTeam = async (req, res) => {
       }
     }
 
+    if (deadline) {
+      const selectedDate = new Date(deadline);
+      selectedDate.setHours(0, 0, 0, 0);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        return res.status(400).json({
+          success: false,
+          message: "Deadline cannot be in the past",
+        });
+      }
+    }
+
     const updated = await Team.findByIdAndUpdate(
       req.params.id,
       {
         name: name ?? team.name,
-        projectName: projectName?.trim() ?? team.projectName,
+        project: project ?? team.project,
         description: description?.trim() ?? team.description,
         skillsRequired: Array.isArray(skillsRequired)
           ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
@@ -254,6 +314,7 @@ const updateTeam = async (req, res) => {
         mode: mode ?? team.mode,
         experienceLevel: experienceLevel ?? team.experienceLevel,
         meetingPlatform: meetingPlatform ?? team.meetingPlatform,
+        deadline: deadline ?? team.deadline,
       },
       { new: true }
     );
@@ -266,6 +327,11 @@ const updateTeam = async (req, res) => {
     await updated.populate(
       "members",
       "firstName lastName email"
+    );
+
+    await updated.populate(
+      "project",
+      "projectName category"
     );
 
     return res.status(200).json({
@@ -356,6 +422,12 @@ const leaveTeam = async (req, res) => {
       "firstName lastName email"
     );
 
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: {
+        teamsJoined: -1
+      }
+    });
+
     return res.status(200).json({
       success: true,
       message: "Left successfully",
@@ -377,6 +449,15 @@ const addMember = async (req, res) => {
 
     if (!mongoose.isValidObjectId(userId)) {
       return res.status(400).json({ success: false, message: "Invalid userId" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     const team = await Team.findById(req.params.id);
@@ -425,6 +506,15 @@ const removeMember = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid userId" });
     }
 
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
     const team = await Team.findById(req.params.id);
 
     if (!team) {
@@ -454,6 +544,12 @@ const removeMember = async (req, res) => {
     );
 
     await team.save();
+
+    await User.findByIdAndUpdate(userId, {
+      $inc: {
+        teamsJoined: -1
+      }
+    });
 
     await team.populate(
       "members",

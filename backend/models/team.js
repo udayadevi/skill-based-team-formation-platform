@@ -33,29 +33,50 @@ const teamSchema = new mongoose.Schema(
       max: 20
     },
 
-    projectName: {
-      type: String,
+    project: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
       required: true,
-      trim: true
     },
-    
+
     category: {
       type: String,
+      enum: [
+        "Web Development",
+        "Mobile App",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Cyber Security"
+      ],
       default: "Web Development"
     },
 
     mode: {
       type: String,
+      enum: ["Online", "Offline", "Hybrid"],
       default: "Online"
     },
 
     experienceLevel: {
       type: String,
+      enum: [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ],
       default: "Beginner"
     },
 
     meetingPlatform: {
       type: String,
+      enum: [
+        "",
+        "Google Meet",
+        "Zoom",
+        "Microsoft Teams",
+        "Discord",
+        "Slack"
+      ],
       default: ""
     },
 
@@ -67,6 +88,7 @@ const teamSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   },
   { timestamps: true }

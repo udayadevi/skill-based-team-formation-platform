@@ -13,9 +13,12 @@ import ResetPassword from "./pages/ResetPassword";
 
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+
 import CreateTeam from "./pages/CreateTeam";
 import FindTeam from "./pages/FindTeam";
+
 import Projects from "./pages/Projects";
+import CreateProject from "./pages/CreateProject";
 
 function App() {
   return (
@@ -32,10 +35,12 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         {/* Pages handle authentication themselves */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/create-team" element={<CreateTeam />} />
         <Route path="/find-team" element={<FindTeam />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/create-project" element={<CreateProject />} />
+        
       </Routes>
 
       <ToastContainer position="top-right" autoClose={3000} />

@@ -131,7 +131,7 @@ const FindTeam = () => {
 
     const text = `
       ${team.isDefault ? team.title : team.name}
-      ${team.isDefault ? team.project : team.projectName}
+      ${team.isDefault ? team.project : team.project?.projectName}
       ${skills.join(" ")}
     `.toLowerCase();
 
@@ -205,7 +205,9 @@ const FindTeam = () => {
 
                 <p>
                   <strong>📂 Project:</strong>{" "}
-                  {team.isDefault ? team.project : team.projectName}
+                  {team.isDefault
+                    ? team.project
+                    : team.project?.projectName}
                 </p>
 
                 <p>

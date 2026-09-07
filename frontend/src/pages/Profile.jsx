@@ -12,8 +12,12 @@ import {
   FaGlobe,
   FaPhone,
   FaEnvelope,
-  FaUserEdit
+  FaUserEdit,
+  FaAward,
+  FaStar,
+  FaPlus
 } from "react-icons/fa";
+import SkillGraph from "../components/SkillGraph";
 
 function Profile() {
 
@@ -23,6 +27,10 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [imageMenuOpen, setImageMenuOpen] = useState(false);
+
+  const [structuredSkills, setStructuredSkills] = useState([]);
+  const [newSkillName, setNewSkillName] = useState("");
+  const [newSkillLevel, setNewSkillLevel] = useState(3);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -84,6 +92,13 @@ function Profile() {
         }
       }
 
+      // SKILLS
+      const rawSkills = data.skills || [];
+      const normalized = rawSkills.map((s) =>
+        typeof s === "string" ? { name: s, level: 3 } : { name: s.name, level: s.level || 3 }
+      );
+      setStructuredSkills(normalized);
+
       // FORM DATA
       setFormData({
         firstName: data.firstName || "",
@@ -93,7 +108,7 @@ function Profile() {
         github: data.github || "",
         linkedin: data.linkedin || "",
         portfolio: data.portfolio || "",
-        skills: data.skills?.join(", ") || "",
+        skills: normalized.map((s) => s.name).join(", "),
         lookingFor: data.lookingFor || "",
         availability: data.availability || "Available for New Projects",
         experience: data.experience || "",
@@ -123,6 +138,21 @@ function Profile() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddSkill = () => {
+    if (!newSkillName.trim()) return;
+    if (structuredSkills.some((s) => s.name.toLowerCase() === newSkillName.trim().toLowerCase())) {
+      toast.info("Skill already in your list");
+      return;
+    }
+    setStructuredSkills([...structuredSkills, { name: newSkillName.trim(), level: Number(newSkillLevel) }]);
+    setNewSkillName("");
+    setNewSkillLevel(3);
+  };
+
+  const handleRemoveSkill = (index) => {
+    setStructuredSkills(structuredSkills.filter((_, i) => i !== index));
   };
 
   const handleImageChange = (e) => {
@@ -158,9 +188,7 @@ function Profile() {
       await api.put("/users/update-profile", {
         ...formData,
         profileImage: profileImage?.trim() === "" ? null : profileImage,
-        skills: formData.skills
-          ? formData.skills.split(",").map(s => s.trim()).filter(Boolean)
-          : []
+        skills: structuredSkills
       });
 
       toast.success("Profile Updated Successfully");
@@ -444,8 +472,9 @@ function Profile() {
                     <span>Skills</span>
 
                     <h4>
-                      {user.skills?.join(", ") ||
-                        "-"}
+                      {(user.skills || []).map((s) =>
+                        typeof s === "string" ? s : s.name
+                      ).join(", ") || "-"}
                     </h4>
                   </div>
 
@@ -596,13 +625,61 @@ function Profile() {
                   onChange={handleChange}
                 />
 
-                <input
-                  type="text"
-                  name="skills"
-                  placeholder="React, Node, MongoDB..."
-                  value={formData.skills}
-                  onChange={handleChange}
-                />
+                <div className="skill-editor-box">
+                  <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#cbd5e1" }}>
+                    Manage Your Skills & Proficiency (Levels 1 - 5):
+                  </label>
+                  <div className="skill-input-row">
+                    <input
+                      type="text"
+                      placeholder="e.g. React, Node.js, Python"
+                      value={newSkillName}
+                      onChange={(e) => setNewSkillName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddSkill();
+                        }
+                      }}
+                    />
+                    <select
+                      value={newSkillLevel}
+                      onChange={(e) => setNewSkillLevel(Number(e.target.value))}
+                    >
+                      <option value={1}>1 - Beginner</option>
+                      <option value={2}>2 - Elementary</option>
+                      <option value={3}>3 - Intermediate</option>
+                      <option value={4}>4 - Advanced</option>
+                      <option value={5}>5 - Expert</option>
+                    </select>
+                    <button
+                      type="button"
+                      className="add-skill-btn"
+                      onClick={handleAddSkill}
+                    >
+                      <FaPlus /> Add
+                    </button>
+                  </div>
+                  <div className="active-skill-chips">
+                    {structuredSkills.length === 0 ? (
+                      <p style={{ color: "#94a3b8", fontSize: "0.85rem", margin: 0 }}>No skills added yet. Use the inputs above to add skills.</p>
+                    ) : (
+                      structuredSkills.map((s, idx) => (
+                        <div key={idx} className="editable-skill-chip">
+                          <span>{s.name}</span>
+                          <span className="chip-level">Lvl {s.level}</span>
+                          <button
+                            type="button"
+                            className="remove-skill-btn"
+                            onClick={() => handleRemoveSkill(idx)}
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
 
                 <button
                   type="submit"
@@ -619,38 +696,30 @@ function Profile() {
 
         </div>
 
-        {/* SKILLS */}
-
-        <div className="skills-card">
-
-          <div className="section-title">
-            <h2>Skills</h2>
+        {/* REPUTATION SCORE CARD (PHASE 10) */}
+        <div className="reputation-badge-card">
+          <div className="reputation-header">
+            <h3><FaAward style={{ color: "#f59e0b" }} /> Platform Reputation & Reliability</h3>
+            <span className="reputation-score-pill">{user.reputationScore || 80}/100</span>
           </div>
-
-          <div className="skills-container">
-
-            {user.skills?.length > 0 ? (
-
-              user.skills.map((skill, index) => (
-
-                <span
-                  key={index}
-                  className="skill-badge"
-                >
-                  {skill}
-                </span>
-
-              ))
-
-            ) : (
-
-              <p>No skills added yet.</p>
-
-            )}
-
+          <div className="reputation-factors">
+            <div className="rep-factor">
+              <span>Task Reliability</span>
+              <strong>{user.reputationBreakdown?.taskReliability || 85}%</strong>
+            </div>
+            <div className="rep-factor">
+              <span>Project Success</span>
+              <strong>{user.reputationBreakdown?.projectSuccess || 80}%</strong>
+            </div>
+            <div className="rep-factor">
+              <span>Collaboration Score</span>
+              <strong>{user.reputationBreakdown?.collaborationScore || 80}%</strong>
+            </div>
           </div>
-
         </div>
+
+        {/* SKILL GRAPH VISUALIZATION (PHASE 3) */}
+        <SkillGraph skills={user.skills} />
 
         {/* MY STATUS */}
 

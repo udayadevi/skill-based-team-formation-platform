@@ -67,9 +67,44 @@ const userSchema = new mongoose.Schema(
       required: true
     },
 
-    skills: {
+    skills: [
+      {
+        name: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        level: {
+          type: Number,
+          required: true,
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      }
+    ],
+
+    interests: {
       type: [String],
       default: []
+    },
+
+    commitmentHours: {
+      type: Number,
+      default: 20
+    },
+
+    reputationScore: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 80
+    },
+
+    reputationBreakdown: {
+      taskReliability: { type: Number, default: 80 },
+      projectSuccess: { type: Number, default: 80 },
+      collaborationScore: { type: Number, default: 80 }
     },
 
     github: {

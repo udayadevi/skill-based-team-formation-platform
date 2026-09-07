@@ -54,7 +54,7 @@ function Dashboard() {
         let projectCountValue = 0;
         try {
           const projectRes = await API.get("/projects");
-          projectCountValue = projectRes.data?.length || 0;
+          projectCountValue = projectRes.data?.data?.length || 0;
         } catch (err) {
           projectCountValue = 0;
         }

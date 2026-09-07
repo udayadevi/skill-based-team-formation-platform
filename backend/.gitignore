@@ -1,4 +1,9 @@
 node_modules/
-.env
 dist/
 build/
+.env
+.env.*
+!.env.example
+*.local
+npm-debug.log*
+logs/

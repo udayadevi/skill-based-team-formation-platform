@@ -1011,3 +1011,156 @@
     opacity: 1;
   }
 }
+
+/* ===========================
+   REPUTATION CARD & SKILL EDITOR (PHASE 2 & 10)
+=========================== */
+
+.reputation-badge-card {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.reputation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reputation-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reputation-score-pill {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.reputation-factors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.rep-factor {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.rep-factor span {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.rep-factor strong {
+    font-size: 1rem;
+    color: #38bdf8;
+}
+
+.skill-editor-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 15px 0;
+}
+
+.skill-input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.skill-input-row input {
+    flex: 2;
+    min-width: 150px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #0f172a;
+    color: #fff;
+}
+
+.skill-input-row select {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #0f172a;
+    color: #fff;
+}
+
+.add-skill-btn {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.add-skill-btn:hover {
+    background: #4f46e5;
+}
+
+.active-skill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.editable-skill-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    color: #e0e7ff;
+}
+
+.chip-level {
+    background: #6366f1;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.remove-skill-btn {
+    background: transparent;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.remove-skill-btn:hover {
+    color: #ef4444;
+}

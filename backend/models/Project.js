@@ -26,11 +26,45 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
 
-    requiredSkills: {
-      type: [String],
-      default: [],
+    projectType: {
+      type: String,
+      enum: [
+        "Startup",
+        "Hackathon",
+        "Academic Project",
+        "Research",
+        "Other"
+      ],
+      default: "Startup"
     },
 
+    requiredSkills: [
+      {
+        name: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        requiredLevel: {
+          type: Number,
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      }
+    ],
+
+    teamSize: {
+      type: Number,
+      default: 4,
+      min: 2,
+      max: 20
+    },
+
+    commitmentRequired: {
+      type: String,
+      default: "15-20 hrs/week"
+    },
 
     experienceLevel: {
       type: String,

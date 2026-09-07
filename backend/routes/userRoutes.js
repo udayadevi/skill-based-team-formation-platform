@@ -9,7 +9,10 @@ const {
   getMe,
   getProfile,
   updateProfile,
-  changePassword
+  changePassword,
+  getUserAnalytics,
+  getUserContributions,
+  getUserSkillGraph,
 } = require("../controllers/userController");
 
 // My Profile
@@ -18,6 +21,18 @@ router.get(
   protect,
   getMe
 );
+
+// Analytics & Metrics (Phase 9 & 10)
+router.get("/me/analytics", protect, getUserAnalytics);
+router.get("/:id/analytics", protect, getUserAnalytics);
+
+// Contribution History (Phase 8)
+router.get("/me/contributions", protect, getUserContributions);
+router.get("/:id/contributions", protect, getUserContributions);
+
+// Skill Graph Data (Phase 3)
+router.get("/me/skill-graph", protect, getUserSkillGraph);
+router.get("/:id/skill-graph", protect, getUserSkillGraph);
 
 // Public Profile
 router.get(
@@ -40,3 +55,4 @@ router.put(
 );
 
 module.exports = router;
+

@@ -125,14 +125,18 @@ const FindTeam = () => {
   }, []);
 
   const filteredTeams = teams.filter((team) => {
-    const skills = team.isDefault
+    const rawSkills = team.isDefault
       ? team.skills || []
       : team.skillsRequired || [];
+
+    const skillNames = rawSkills.map((s) =>
+      typeof s === "string" ? s : (s.name || "")
+    );
 
     const text = `
       ${team.isDefault ? team.title : team.name}
       ${team.isDefault ? team.project : team.project?.projectName}
-      ${skills.join(" ")}
+      ${skillNames.join(" ")}
     `.toLowerCase();
 
     return text.includes(search.toLowerCase());
@@ -231,9 +235,10 @@ const FindTeam = () => {
                 </p>
 
                 <div className="skills">
-                  {skills.map((skill) => (
-                    <span key={skill}>{skill}</span>
-                  ))}
+                  {(team.isDefault ? (team.skills || []) : (team.skillsRequired || [])).map((skill, idx) => {
+                    const name = typeof skill === "string" ? skill : (skill.name || "");
+                    return <span key={idx}>{name}</span>;
+                  })}
                 </div>
 
                 <div className="buttons">

@@ -49,6 +49,20 @@ const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const normalizeSkills = (skills) => {
+      if (Array.isArray(skills)) {
+        return skills.map((s) => {
+          if (typeof s === 'string' && s.trim()) return { name: s.trim(), level: 3 };
+          if (s && typeof s === 'object' && s.name) return { name: String(s.name).trim(), level: Math.max(1, Math.min(5, Number(s.level) || 3)) };
+          return null;
+        }).filter(Boolean);
+      }
+      if (typeof skills === 'string' && skills.trim()) {
+        return skills.split(',').map((s) => s.trim()).filter(Boolean).map((name) => ({ name, level: 3 }));
+      }
+      return [];
+    };
+
     const user = await User.create({
       firstName: firstName?.trim(),
       lastName: lastName?.trim(),
@@ -62,11 +76,7 @@ const registerUser = async (req, res) => {
       linkedin,
       portfolio,
       bio,
-      skills: Array.isArray(skills)
-        ? skills
-        : typeof skills === "string"
-          ? skills.split(",").map((s) => s.trim()).filter(Boolean)
-          : [],
+      skills: normalizeSkills(skills),
     });
 
     const token = generateToken(user._id);

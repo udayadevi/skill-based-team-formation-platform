@@ -179,14 +179,18 @@ const TeamDetailsModal = ({ team, onClose, onJoin }) => {
 
                             <div className="skillContainer">
 
-                                {skills.map((skill) => (
-                                    <span
-                                        key={skill}
-                                        className="skillBadge"
-                                    >
-                                        {skill}
-                                    </span>
-                                ))}
+                                {skills.map((skill, idx) => {
+                                    const name = typeof skill === "string" ? skill : (skill.name || skill);
+                                    const level = typeof skill === "object" && skill.requiredLevel ? ` (Lvl ${skill.requiredLevel})` : "";
+                                    return (
+                                        <span
+                                            key={idx}
+                                            className="skillBadge"
+                                        >
+                                            {name}{level}
+                                        </span>
+                                    );
+                                })}
 
                             </div>
 

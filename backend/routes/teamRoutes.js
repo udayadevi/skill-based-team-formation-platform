@@ -10,16 +10,21 @@ const {
   deleteTeam,
   leaveTeam,
   addMember,
-  removeMember
+  removeMember,
+  getTeamCompatibility,
 } = require("../controllers/teamController");
 
 const protect = require("../middleware/authMiddleware");
 
-// CREATE TEAM
+// CREATE TEAM (both /create and / work)
+router.post("/", protect, createTeam);
 router.post("/create", protect, createTeam);
 
 // GET ALL TEAMS
 router.get("/", protect, getAllTeams);
+
+// GET TEAM COMPATIBILITY (Phase 5)
+router.get("/:id/compatibility", protect, getTeamCompatibility);
 
 // GET TEAM BY ID
 router.get("/:id", protect, getTeamById);

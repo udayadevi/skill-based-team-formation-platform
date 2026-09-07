@@ -143,10 +143,11 @@ const CreateTeam = () => {
 
           <label>Category</label>
           <select name="category" value={form.category} onChange={handleChange}>
-            <option>Web Development</option>
-            <option>Mobile App</option>
-            <option>AI</option>
-            <option>ML</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Mobile App">Mobile App</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Machine Learning">Machine Learning</option>
+            <option value="Cyber Security">Cyber Security</option>
           </select>
 
           <label>Deadline *</label>

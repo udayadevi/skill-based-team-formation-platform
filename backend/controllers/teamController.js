@@ -1,7 +1,9 @@
 const Team = require("../models/Team");
 const mongoose = require("mongoose");
 const User = require("../models/User");
-const Project = require("../models/project");
+const Project = require("../models/Project");
+const CollaborationEvent = require("../models/CollaborationEvent");
+const { calculateCompatibility } = require("../services/compatibilityService");
 
 /* ================= CREATE TEAM ================= */
 const createTeam = async (req, res) => {
@@ -77,13 +79,28 @@ const createTeam = async (req, res) => {
       });
     }
 
+    const formattedSkills = Array.isArray(skillsRequired)
+      ? skillsRequired
+          .map((skill) => {
+            if (typeof skill === "string" && skill.trim()) {
+              return { name: skill.trim(), requiredLevel: 3 };
+            }
+            if (skill && typeof skill === "object" && skill.name) {
+              return {
+                name: String(skill.name).trim(),
+                requiredLevel: Math.max(1, Math.min(5, Number(skill.requiredLevel || skill.level) || 3)),
+              };
+            }
+            return null;
+          })
+          .filter(Boolean)
+      : [];
+
     const team = await Team.create({
       name: name.trim(),
       project,
       description: description.trim(),
-      skillsRequired: Array.isArray(skillsRequired)
-        ? skillsRequired.map(skill => skill.trim()).filter(Boolean)
-        : [],
+      skillsRequired: formattedSkills,
       maxMembers,
       category,
       mode,
@@ -98,6 +115,20 @@ const createTeam = async (req, res) => {
       "createdBy",
       "firstName lastName email"
     );
+
+    // Log Collaboration Timeline Event
+    try {
+      await CollaborationEvent.create({
+        team: team._id,
+        project: team.project,
+        user: req.user._id,
+        type: "team_created",
+        title: `Team "${team.name}" was formed`,
+        description: `Created for project with ${formattedSkills.length} required skill specializations.`,
+      });
+    } catch (e) {
+      console.error("Timeline log error:", e.message);
+    }
 
     return res.status(201).json({
       success: true,
@@ -567,6 +598,36 @@ const removeMember = async (req, res) => {
   }
 };
 
+/* ================= GET TEAM COMPATIBILITY ================= */
+const getTeamCompatibility = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const team = await Team.findById(req.params.id).populate("project");
+    const user = await User.findById(userId);
+
+    if (!team || !user) {
+      return res.status(404).json({ success: false, message: "Team or User not found" });
+    }
+
+    const scoreResult = await calculateCompatibility(user, team);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        teamId: team._id,
+        teamName: team.name,
+        ...scoreResult,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
   createTeam,
   getAllTeams,
@@ -576,5 +637,6 @@ module.exports = {
   deleteTeam,
   leaveTeam,
   addMember,
-  removeMember
+  removeMember,
+  getTeamCompatibility,
 };

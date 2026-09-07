@@ -14,10 +14,12 @@ const teamSchema = new mongoose.Schema(
       trim: true
     },
 
-    skillsRequired: {
-      type: [String],
-      default: []
-    },
+    skillsRequired: [
+      {
+        name: { type: String, trim: true },
+        requiredLevel: { type: Number, min: 1, max: 5, default: 3 }
+      }
+    ],
 
     members: [
       {

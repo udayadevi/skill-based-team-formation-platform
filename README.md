@@ -1,285 +1,169 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# 🚀 Skill-Based Team Formation Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack production-ready platform that enables developers and creators to find projects, form teams, match skills, and collaborate effectively with automated compatibility scoring and execution tracking.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# Skill-Based Team Formation Platform
-
-A full-stack **MERN** application that allows users to register, log in, create teams, join teams, and get **skill-based compatibility scores** to find the best-fit teams.
-
-Built with **MongoDB**, **Express.js**, **React.js**, and **Node.js**, using **JWT Authentication**, **bcrypt.js**, and an **MVC architecture** on the backend.
+Built with **MongoDB Atlas**, **Express.js**, **React 19 (Vite)**, and **Node.js**.
 
 ---
 
-## Features
+## 🌟 Key Features
 
-- User registration & login with hashed passwords (bcrypt)
-- JWT-based authentication & protected routes
-- Create and view teams
-- Send, accept, and reject join requests
-- Skill-based compatibility score: matches user skills against a team's required skills
-- Responsive React frontend with dashboard, team listing, and profile pages
-- Clean MVC project structure on the backend
-- MongoDB Atlas for cloud database storage
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | React.js, React Router, Axios |
-| Backend | Node.js, Express.js |
-| Database | MongoDB Atlas (Mongoose) |
-| Auth | JWT, bcrypt.js |
-| Architecture | MVC (Model-View-Controller) |
-| API Testing | Postman |
+- **Multi-Factor Compatibility Engine**: Real-time compatibility calculation factoring in skill coverage, proficiency alignment, commitment level, historical task completion reliability, and collaboration reputation.
+- **Projects & Teams Hub**: Browse, create, and filter projects and teams across multiple tech domains (Web, AI, Mobile, Cyber Security, etc.).
+- **Interactive Kanban Task Board**: Manage and assign tasks within teams with priority and skill tags.
+- **Collaboration Timeline**: Audit trail of team formation, accepted members, completed tasks, and milestones.
+- **User Execution Analytics & Skill Graph**: Interactive visual skill breakdown and contribution analytics.
+- **JWT Authentication & Security**: Secure bcrypt password hashing, token interceptors, and protected API endpoints.
+- **Production-Ready**: Configured for seamless deployment on **Vercel** (Frontend) and **Render** (Backend) with zero hardcoded credentials.
 
 ---
 
-## Project Structure
+## 🏗️ Architecture & Project Structure
 
 ```
-skill-team-formation/
-├── client/                 # React frontend
-│   ├── public/
-│   └── src/
-│       ├── components/     # Reusable UI components
-│       ├── pages/          # Login, Register, Dashboard, Teams, Profile
-│       ├── context/        # Auth context / state management
-│       ├── services/       # Axios API calls
-│       └── App.js
+skill-based-team-formation/
+├── backend/                       # Node.js + Express REST API
+│   ├── config/                    # Database connection (MongoDB Atlas)
+│   ├── controllers/               # Business logic controllers
+│   ├── middleware/                # JWT auth verification middleware
+│   ├── models/                    # Mongoose Schemas (User, Team, Project, Task, etc.)
+│   ├── routes/                    # API Route endpoints
+│   ├── services/                  # Compatibility & Reputation computation engine
+│   ├── utils/                     # Email & notification helpers
+│   ├── app.js                     # Express app setup & CORS configuration
+│   ├── render.yaml                # Render Web Service Blueprint
+│   └── package.json
 │
-├── server/                  # Node.js + Express backend
-│   ├── config/             # Database connection & environment configs
-│   ├── controllers/        # Business logic for users, teams, requests
-│   ├── middleware/          # JWT auth middleware
-│   ├── models/             # Mongoose schemas (User, Team, JoinRequest)
-│   ├── routes/             # API route definitions
-│   ├── app.js              # App entry point
-│   └── .env.example        # Sample environment variables
+├── frontend/                      # React 19 + Vite SPA
+│   ├── src/
+│   │   ├── components/            # UI components (TaskBoard, Timeline, SkillGraph, etc.)
+│   │   ├── pages/                 # Full-page views (Dashboard, Projects, FindTeam, etc.)
+│   │   ├── routes/                # Client-side protected route guards
+│   │   ├── services/              # Axios API client
+│   │   ├── styles/                # Component & page stylesheets
+│   │   ├── App.jsx                # Main route definitions
+│   │   └── main.jsx               # React entry point
+│   ├── vercel.json                # Vercel SPA routing configuration
+│   ├── vite.config.js             # Vite build setup
+│   └── package.json
 │
+├── render.yaml                    # Root Render configuration
+├── vercel.json                    # Root Vercel deployment configuration
+├── package.json                   # Root monorepo orchestration scripts
 └── README.md
 ```
 
 ---
 
-## Database Models
+## 🛠️ Local Development Setup
 
-### User
-- `name`
-- `email`
-- `password` (hashed)
-- `skills` (array)
-- `role`
+### 1. Prerequisites
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0
+- **MongoDB Atlas** database cluster
 
-### Team
-- `teamName`
-- `description`
-- `requiredSkills` (array)
-- `createdBy` (User reference)
-- `members` (array of User references)
-
-### JoinRequest
-- `userId`
-- `teamId`
-- `status` (pending / accepted / rejected)
-
----
-
-## Getting Started
-
-### Prerequisites
-- Node.js (v18+ recommended)
-- MongoDB Atlas account
-
-### Installation
-
+### 2. Installation
+Install all dependencies for both backend and frontend from the root:
 ```bash
-git clone https://github.com/<your-username>/skill-team-formation.git
-cd skill-team-formation
+npm run install:all
 ```
+*(Or install manually in each folder: `cd backend && npm install`, `cd frontend && npm install`)*
 
-**Backend setup:**
-```bash
-cd server
-npm install
-```
+### 3. Environment Variables Configuration
 
-**Frontend setup:**
-```bash
-cd client
-npm install
-```
-
-### Environment Variables
-
-Create a `.env` file inside the `server/` directory:
-
+#### Backend (`backend/.env`):
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_atlas_connection_string
+NODE_ENV=development
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.v9wrfvj.mongodb.net/skillbasedteam?retryWrites=true&w=majority&appName=Cluster0
+DB_NAME=skillbasedteam
 JWT_SECRET=your_jwt_secret_key
+FRONTEND_URL=http://localhost:5173
 ```
 
-If the frontend needs to know the API URL, create a `.env` file inside `client/`:
-
+#### Frontend (`frontend/.env.local`):
 ```env
-REACT_APP_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000/api
 ```
 
-### Run the App
-
-**Backend:**
+### 4. Running Locally
+Run backend:
 ```bash
-cd server
-npm start
+npm run dev:backend
+# API will run on http://localhost:5000
 ```
-For development with auto-reload:
+
+In a second terminal, run frontend:
 ```bash
-npm run dev
+npm run dev:frontend
+# App will run on http://localhost:5173
 ```
-
-**Frontend:**
-```bash
-cd client
-npm start
-```
-
-The React app will run on `http://localhost:3000` and the API on `http://localhost:5000`.
 
 ---
 
-## API Endpoints
+## 🚀 Deployment Guide
 
-### Authentication
-| Method | Endpoint | Description | Access |
+### Deploying Backend to Render
+1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New > Web Service**.
+2. Connect this GitHub repository.
+3. Configure the service:
+   - **Name**: `skill-team-backend`
+   - **Root Directory**: `backend`
+   - **Runtime**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `node app.js`
+4. Add **Environment Variables** in Render:
+   - `NODE_ENV`: `production`
+   - `PORT`: `10000`
+   - `MONGO_URI`: `mongodb+srv://<username>:<password>@cluster0.v9wrfvj.mongodb.net/skillbasedteam?retryWrites=true&w=majority&appName=Cluster0`
+   - `DB_NAME`: `skillbasedteam`
+   - `JWT_SECRET`: *(Generate a secure random string)*
+   - `FRONTEND_URL`: `https://your-frontend-app.vercel.app` *(update once frontend is deployed)*
+
+*(Alternatively, apply the included `render.yaml` blueprint for automatic setup).*
+
+---
+
+### Deploying Frontend to Vercel
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New > Project**.
+2. Import this GitHub repository.
+3. In project settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Add **Environment Variables** in Vercel:
+   - `VITE_API_URL`: `https://skill-team-backend.onrender.com/api` *(Your Render backend URL with /api)*
+5. Click **Deploy**. Vercel will automatically build the React app and configure SPA rewrites.
+
+---
+
+## 📡 API Overview
+
+| Method | Endpoint | Description | Auth Required |
 |---|---|---|---|
-| POST | `/api/auth/register` | Register a new user | Public |
-| POST | `/api/auth/login` | Login and get JWT token | Public |
-
-### Teams
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| POST | `/api/teams` | Create a new team | Private |
-| GET | `/api/teams` | View all teams | Private |
-| GET | `/api/teams/:id` | View team details | Private |
-| POST | `/api/teams/:id/join` | Send a join request | Private |
-| PUT | `/api/teams/:id/requests/:requestId` | Accept/Reject a join request | Private (Team creator) |
-
-### Compatibility
-| Method | Endpoint | Description | Access |
-|---|---|---|---|
-| GET | `/api/teams/:id/compatibility` | Get user's skill match % with a team | Private |
-
-> All private routes require a `Bearer <token>` in the `Authorization` header.
-
----
-
-## Compatibility Scoring Logic
-
-The compatibility score is calculated as:
-
-```
-(Number of matching skills / Total required skills) * 100
-```
-
-This gives users a quick way to see how well their skill set aligns with a team's requirements before sending a join request.
+| `GET` | `/` | API Health Check | No |
+| `POST` | `/api/auth/register` | Register new user | No |
+| `POST` | `/api/auth/login` | Login user & issue JWT | No |
+| `GET` | `/api/users/me` | Get logged-in user profile | Yes |
+| `PUT` | `/api/users/update-profile`| Update user profile & skills | Yes |
+| `GET` | `/api/users/me/analytics` | Execution analytics & score | Yes |
+| `GET` | `/api/users/me/skill-graph`| Skill breakdown graph data | Yes |
+| `GET` | `/api/projects` | Get all projects | No |
+| `POST` | `/api/projects` | Create a new project | Yes |
+| `GET` | `/api/projects/recommended`| Recommended projects with compatibility | Yes |
+| `GET` | `/api/teams` | List all teams | Yes |
+| `POST` | `/api/teams` | Create a new team | Yes |
+| `GET` | `/api/teams/:id/compatibility` | Compute skill compatibility for team | Yes |
+| `POST` | `/api/joinrequests` | Send team join request | Yes |
+| `GET` | `/api/joinrequests` | List join requests | Yes |
+| `PUT` | `/api/joinrequests/:id/accept` | Accept applicant into team | Yes |
+| `GET` | `/api/tasks/team/:teamId` | Get team task board | Yes |
+| `POST` | `/api/tasks` | Create/assign team task | Yes |
+| `PUT` | `/api/tasks/:id/status` | Update task status & reputation | Yes |
+| `GET` | `/api/timeline/team/:teamId` | Team collaboration timeline | Yes |
 
 ---
 
-## Roadmap
-
-- [x] Project setup with MVC structure
-- [x] User authentication (Register/Login, JWT, bcrypt)
-- [x] Team creation & management APIs
-- [x] Join request system
-- [x] Skill compatibility scoring
-- [ ] React frontend integration
-- [ ] Deployment (Render/Vercel/Netlify)
-
----
-
-## Testing
-
-All APIs are tested using **Postman**. A Postman collection can be added at `/docs/postman_collection.json` for easy import.
-
----
-
-## License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-## Author
-
-Developed as a mini project to demonstrate full-stack development skills using the MERN stack (MongoDB, Express, React, Node.js) with JWT-based authentication and skill-matching logic.
->>>>>>> 15e1c049dae02713488298dabc57e5b0756bd0b6
+## 📄 License
+This project is licensed under the MIT License.

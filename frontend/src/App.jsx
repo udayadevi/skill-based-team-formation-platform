@@ -23,7 +23,6 @@ import CreateProject from "./pages/CreateProject";
 function App() {
   return (
     <>
-      <ToastContainer />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
